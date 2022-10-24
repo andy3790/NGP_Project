@@ -83,7 +83,11 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
 	switch (uMsg)
 	{
 	case WM_CREATE:
-		PlaySound(TEXT("bgm.wav"), NULL, SND_FILENAME | SND_ASYNC | SND_LOOP);
+		//PlaySound(TEXT("bgm.wav"), NULL, SND_FILENAME | SND_ASYNC | SND_LOOP);
+		mciSendString(L"open bgm.mp3 type mpegvideo alias mp3", NULL, 0, NULL);
+		mciSendString(L"play bgm.mp3 repeat", NULL, 0, NULL);
+		mciSendString(L"setaudio bgm.mp3 volume to 100", NULL, 0, NULL);
+
 		hDC = GetDC(hWnd);
 		GetClientRect(hWnd, &WndRect);
 		Map.ResetMapObject(hDC, WndRect.right * 2, WndRect.bottom);
