@@ -33,8 +33,9 @@
 
 
 # origin
-/.vs
+/WinApi_Final/.vs
 /WinApi_Final/x64
+/WinApi_Final/WinApi_Final/x64
 *.exe
 *.ilk
 *.pdb
