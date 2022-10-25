@@ -1,0 +1,62 @@
+client
+	키 입력
+
+Server
+	위치
+	방향정보
+
+
+	(event) 체력
+	(event) 피격정보
+	(event) 스킬 등 상태정보
+	(event) 스테이지 이동
+	(event) 점수
+
+
+
+모든 업데이트는 Server에서
+출력은 Client에서
+
+
+
+
+GameObject
+	Creacher
+		Player
+		Enemy
+	MapObject
+		Brick
+		BackGround
+
+
+
+Update()
+
+
+Server
+	mainTh
+
+	asdfTh
+
+Client
+	mainTh
+		() 
+		Recv() 
+		Upfste
+			Print
+	asdfTh
+		Send() 
+
+
+
+FrameWork
+Server
+	Main()
+		Accept()
+
+	Thread1()
+		Update()
+		Send()
+
+	Thread2()
+		Recv()
