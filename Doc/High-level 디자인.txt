@@ -1,0 +1,44 @@
+Client
+	mainTh
+		() 
+		Recv() - 출력정보
+		Update()
+			Print() - 프레임 제한?
+	asdfTh
+		Send() - 키 입력 
+
+
+
+Server
+	Main()
+		Accept() - 플레이어 1과 2를 받는다.
+
+	Thread1()
+		Update()
+		Send() - 출력정보
+
+	Thread2()
+		Recv() - 키입력
+
+
+출력정보
+	위치
+	방향
+
+	event - 항상 보내질 필요 없는것.
+	체력
+	피격
+	스킬 등 상태정보
+	스테이지 
+	점수
+
+키 입력
+	키보드
+		스킬 1,2,3
+		좌우 이동
+		점프
+		
+	마우스
+		좌, 우 클릭
+			공격
+			대쉬

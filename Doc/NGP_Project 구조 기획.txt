@@ -33,26 +33,21 @@ GameObject
 Update()
 
 
-Server
-	mainTh
-
-	asdfTh
 
 Client
 	mainTh
 		() 
-		Recv() 
-		Upfste
-			Print
+		Recv() - 출력정보
+		Update()
+			Print() - 프레임 제한?
 	asdfTh
-		Send() 
+		Send() - 키 입력 
 
 
 
-FrameWork
 Server
 	Main()
-		Accept()
+		Accept() - 플레이어 1과 2를 받는다.
 
 	Thread1()
 		Update()
