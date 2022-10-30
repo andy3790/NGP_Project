@@ -2,12 +2,23 @@ client
 	키 입력
 
 Server
-	위치
+	인덱스 번호 short
+	위치	short+shot
+	체력	char
+	상태정보	short
+	점수	char
+
+인덱스/ 데이터
+데이터 - 위치 상태 점수 체력
+상태 == 생성 
+점수 =-> 오브젝트 타입
+상태 != 생성
+점수.
 	방향정보
 
 
 	(event) 체력
-	(event) 피격정보
+	(event) 피격정보 - 클라는 없어도 된다.
 	(event) 스킬 등 상태정보
 	(event) 스테이지 이동
 	(event) 점수
