@@ -6,3 +6,305 @@ Low-level 디자인
 등을 포함한 전부
 역할분담
 환경?, 일정 달력으로 => 계획서는 계속 업데이트
+
+
+===============================================
+Define
+----------------------------------------------------------------------------------------
+MAX_OBJECT_COUNT - 한 맵에 존재할 수 있는 최대 GameObject 개수
+MAX_GAME_NUM	 - 서버가 생성할 수 있는 최대 게임의 개수
+----------------------------------------------------------------------------------------
+KEY_JUMP	(KEY_JUMP_1||KEY_JUMP_2) -  키 매핑용 Define
+KEY_RIGHT
+KEY_LEFT
+KEY_ATT
+KEY_DASH
+KEY_RUN
+KEY_SKILL_1
+KEY_SKILL_2
+KEY_SKILL_3
+
+----------------------------------------------------------------------------------------
+OBJECT_TYPE_PLAYER		0x0000	- 통신용 Define
+
+OBJECT_TYPE_BASE			0x1000
+OBJECT_TYPE_BIRD			0x1001
+OBJECT_TYPE_WOLF		0x1002
+OBJECT_TYPE_PLANT		0x1003
+
+OBJECT_TYPE_BRICK		0x2000
+OBJECT_TYPE_BACKGROUND		0x2001
+
+OBJECT_TYPE_PLANTPROJECTILE	0x3000
+================================================
+
+enum MSG_KEY{	- 통신용 열거형
+MSG_KEY_JUMP,
+MSG_KEY_RIGHT,
+MSG_KEY_LEFT,
+MSG_KEY_ATT,
+MSG_KEY_DASH,
+MSG_KEY_RUN,
+MSG_KEY_SKILL_1,
+MSG_KEY_SKILL_2,
+MSG_KEY_SKILL_3
+}
+-------------------------------------------------------------------------------------------
+enum STATE{
+create
+delete
+idle
+jump
+double jump
+left
+right
+att
+dash
+run
+skill_1
+skill_2
+skill_3
+}
+=================================================
+
+전역 class
+
+Pos
+short	x
+short	y
+-------------------------------------------------------------------------------------------
+class OBJECT_DATA _PROTOCOL
+
+short	index
+Pos	pos
+short	state
+char	hp
+char	vel_1	-  상태가 생성일 경우 오브젝트 타입이 되고 이외의 경우 점수가 된다.
+-------------------------------------------------------------------------------------------
+class GameObject
+
+위치
+크기
+
+
+virtual void Render()
+virtual void Update(float eTime)
+-----------------------------------------
+Render
+현재의 상태에 따라서 2D 이미지를 출력한다.
+-----------------------------------------
+Update
+virtual 함수임.
+현재의 상태와 eTime에 따라서 데이터를 갱신한다.
+
+=========================================
+    class Creature : GameObject
+    현재체력
+    최대체력
+    출력할 스프라이트
+
+=========================================
+        class Player : Creature 
+
+        점수
+        이미지[]
+        KeyBoardManager kbm
+=========================================
+        class Enemy : Creature 
+
+        이미지
+=========================================
+            class Base : Enemy 
+=========================================
+            class Bird : Enemy 
+=========================================
+            class Wolf : Enemy 
+=========================================
+            class Plant : Enemy 
+=========================================
+    class MapObject : GameObject
+=========================================
+        class Brick : MapObject 
+
+        이미지[]
+=========================================
+        class BackGround : MapObject 
+
+        이미지[]
+=========================================
+    class Projectile : GameObject
+=========================================
+        class PlantProjectile : Projectile
+
+=========================================
+class KeyBoardManager
+bool KEY_JUMP	
+bool KEY_RIGHT
+bool KEY_LEFT
+bool KEY_ATT
+bool KEY_DASH
+bool KEY_RUN
+bool KEY_SKILL_1
+bool KEY_SKILL_2
+bool KEY_SKILL_3
+
+void reset()
+
+-----------------------------------------
+reset
+모든 변수들을 false로 만든다.
+
+=========================================
+
+int Connecter( char* ServerIp, int PortNum )
+
+High Level Design에서의 이름 : Connecter
+반환값 : int PlayerNum - 서버에서 배정받은 플레이어 번호
+입력값 : char* ServerIp, int PortNum - 서버의 IP, 포트번호
+
+서버 IP와 포트번호를 받아 서버와 통신해 서버에게서 플레이어 번호를 받으면 
+해당 번호를 반환하고 모종의 이유로 받지 못하면 그 외의 번호를 반환한다.
+
+=========================================
+
+void DataReceiver()
+
+High Level Design에서의 이름 : DataReceiver
+
+서버로부터 받은 새로운 정보를 GameObjectManager에게 넘겨준다.
+
+=========================================
+
+class GameObjectManager
+
+High Level Design에서의 이름 : GameObjectManager
+
+GameObject* m_GameObjects[MAX_OBJECT_COUNT]
+
+int AddObject(GameObject* new_object, int index)
+GSEObject GetObject(int index)
+bool DeleteObject(int index)
+void Render()
+
+Client 
+void UpadateObject(char* new_data)
+
+Server 
+void UpadateObject(float eTime)
+
+----------------------------------------------------------------------------
+
+AddObject
+서버에서 받은 데이터중 생성 명령 수행을 위한 함수.
+
+GetObject
+지정 인덱스의 오브젝트 포인터를 반환
+UI 출력때 사용예정
+
+DeleteObject
+서버에서 받은 데이터 중 삭제 명령 수행을 위한 함수.
+
+Render
+m_GameObjects의 Render()를 불러 화면에 출력한다.
+
+Client 
+UpadateObject 
+서버에서 받은 문자열배열 형태의 데이터를 풀어서 오브젝트들을 갱신한다.
+
+Server 
+m_GameObjects의 Update를 부른다. 
+=========================================
+
+void Render()
+
+High Level Design에서의 이름 : Render
+
+GameObjectManager의 Render()를 부른다.
+
+=========================================
+
+bool KeySender(char key, bool flag)
+
+High Level Design에서의 이름 : KeySender
+반환값 : 성공여부
+입력값 : char key, bool flag - 어떤 키인지, 눌렸는지 아닌지
+
+client 프로그램에서 콜백 함수들에 들어갈 예정
+
+=========================================
+
+콜백함수들
+
+RenderScene
+MouseInput
+KeyInput
+KeyUpInput
+SpecialKeyInput
+SpecialUpKeyInput
+
+glut***Func에 인자로 들어갈 함수들.
+
+=========================================
+
+
+
+Server
+-=========================================
+class PlayerData
+
+socket	sock?	- 이거 필요해?
+int gamenum	- 플레이어가 속해있는 게임의 번호
+int playerIndex	- 플레이어 캐릭터의 오브젝트 인덱스
+-=========================================
+class Game
+
+GameObjectManager* GOMgr
+PlayerData* PD[2]
+
+void Update(float eTime)
+bool DataSender()
+
+----------------------------------------------------------------------------
+Update
+GOMgr의 Update를 부른다.
+-----------------------------------------------------------------------------
+DataSender
+GOMgr의 m_GameObjects들의 정보를 OBJECT_DATA _PROTOCOL 에 맞춰 게임에 속한 플레이어에게 송신한다.
+-=========================================
+class PlayerManager
+
+Game* game[MAX_GAME_NUM]
+PlayerData* players[MAX_GAME_NUM*2]
+
+int AcceptPlayer()
+int MakeGame()
+int SetPlayer()
+
+-----------------------------------------------------------------------------
+AcceptPlayer
+
+accept할 경우 게임들을 검사해 빈 자리에 플레이어를 할당한다.
+게임에 빈 자리가 없고 새로운 게임을 생성할 수 있으면 게임을 생성한다.
+키 입력을 받을 쓰레드를 생성한다. 
+-----------------------------------------------------------------------------
+MakeGame
+
+새로운 게임을 만든다.
+-----------------------------------------------------------------------------
+SetPlayer
+
+플레이어를 게임에 추가한다.
+-=========================================
+
+void DataSender()
+
+Game의 DataSender를 부른다.
+
+=========================================
+High Level Design에서의 이름 : KeyReceiver
+
+플레이어마다 배정된 쓰레드.
+
+Client의 keysender가 보낸 데이터를 gameobjectmanager의 keyboardManager에 적용한다.
+
+=========================================
