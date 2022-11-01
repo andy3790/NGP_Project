@@ -73,13 +73,16 @@ Pos
 short	x
 short	y
 -------------------------------------------------------------------------------------------
-class OBJECT_DATA _PROTOCOL
+struct OBJECT_DATA _PROTOCOL
 
 short	index
 Pos	pos
 short	state
 char	hp
 char	vel_1	-  상태가 생성일 경우 오브젝트 타입이 되고 이외의 경우 점수가 된다.
+
+
+
 -------------------------------------------------------------------------------------------
 class GameObject
 
