@@ -47,4 +47,4 @@
 *.lastbuildstate
 *.suo
 *.db
-#*.vcxproj
+*.vcxproj
