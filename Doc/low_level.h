@@ -97,12 +97,12 @@ public:
 #if CONSOL==CLIENT
 public:
 	virtual void Render();
-	virtual void Decode();
+	virtual void Decode(ObjectData object_data);
 
 #elif CONSOL==SERVER
 public:
 	virtual void Update(float eTime);
-	virtual void Encode();
+	virtual ObjectData Encode();
 #endif
 
 };
@@ -118,13 +118,13 @@ public:
 #if CONSOL==CLIENT
 public:
 	virtual void Render();
-	virtual void Decode();
+	virtual void Decode(ObjectData object_data);
 
 #elif CONSOL==SERVER
 public:
 	void SetKeyBoardData(KeyData keydata);
 	virtual void Update(float eTime);
-	virtual void Encode();
+	virtual ObjectData Encode();
 #endif
 };
 //-----------------------------------------------------------------------------------
@@ -137,12 +137,12 @@ public:
 #if CONSOL==CLIENT
 public:
 	virtual void Render();
-	virtual void Decode();
+	virtual void Decode(ObjectData object_data);
 
 #elif CONSOL==SERVER
 public:
 	virtual void Update(float eTime);
-	virtual void Encode();
+	virtual ObjectData Encode();
 #endif
 };
 
@@ -153,12 +153,12 @@ public:
 #if CONSOL==CLIENT
 public:
 	virtual void Render();
-	virtual void Decode();
+	virtual void Decode(ObjectData object_data);
 
 #elif CONSOL==SERVER
 public:
 	virtual void Update(float eTime);
-	virtual void Encode();
+	virtual ObjectData Encode();
 #endif
 };
 class Bird : Enemy {
@@ -168,12 +168,12 @@ public:
 #if CONSOL==CLIENT
 public:
 	virtual void Render();
-	virtual void Decode();
+	virtual void Decode(ObjectData object_data);
 
 #elif CONSOL==SERVER
 public:
 	virtual void Update(float eTime);
-	virtual void Encode();
+	virtual ObjectData Encode();
 #endif
 };
 class Wolf : Enemy {
@@ -183,12 +183,12 @@ public:
 #if CONSOL==CLIENT
 public:
 	virtual void Render();
-	virtual void Decode();
+	virtual void Decode(ObjectData object_data);
 
 #elif CONSOL==SERVER
 public:
 	virtual void Update(float eTime);
-	virtual void Encode();
+	virtual ObjectData Encode();
 #endif
 };
 class Plant : Enemy {
@@ -198,12 +198,12 @@ public:
 #if CONSOL==CLIENT
 public:
 	virtual void Render();
-	virtual void Decode();
+	virtual void Decode(ObjectData object_data);
 
 #elif CONSOL==SERVER
 public:
 	virtual void Update(float eTime);
-	virtual void Encode();
+	virtual ObjectData Encode();
 #endif
 };
 
@@ -214,12 +214,12 @@ public:
 #if CONSOL==CLIENT
 public:
 	virtual void Render();
-	virtual void Decode();
+	virtual void Decode(ObjectData object_data);
 
 #elif CONSOL==SERVER
 public:
 	virtual void Update(float eTime);
-	virtual void Encode();
+	virtual ObjectData Encode();
 #endif
 };
 //-----------------------------------------------------------------------------------
@@ -234,12 +234,12 @@ public:
 #if CONSOL==CLIENT
 public:
 	virtual void Render();
-	virtual void Decode();
+	virtual void Decode(ObjectData object_data);
 
 #elif CONSOL==SERVER
 public:
 	virtual void Update(float eTime);
-	virtual void Encode();
+	virtual ObjectData Encode();
 #endif
 };
 
@@ -251,12 +251,12 @@ public:
 #if CONSOL==CLIENT
 public:
 	virtual void Render();
-	virtual void Decode();
+	virtual void Decode(ObjectData object_data);
 
 #elif CONSOL==SERVER
 public:
 	virtual void Update(float eTime);
-	virtual void Encode();
+	virtual ObjectData Encode();
 #endif
 };
 //-----------------------------------------------------------------------------------
@@ -268,12 +268,12 @@ public:
 #if CONSOL==CLIENT
 public:
 	virtual void Render();
-	virtual void Decode();
+	virtual void Decode(ObjectData object_data);
 
 #elif CONSOL==SERVER
 public:
 	virtual void Update(float eTime);
-	virtual void Encode();
+	virtual ObjectData Encode();
 #endif
 };
 class PlantProjectile : Projectile {
@@ -283,12 +283,12 @@ public:
 #if CONSOL==CLIENT
 public:
 	virtual void Render();
-	virtual void Decode();
+	virtual void Decode(ObjectData object_data);
 
 #elif CONSOL==SERVER
 public:
 	virtual void Update(float eTime);
-	virtual void Encode();
+	virtual ObjectData Encode();
 #endif
 };
 //-----------------------------------------------------------------------------------
@@ -344,7 +344,7 @@ private:
 public:
 	void Update(float eTime);
 	void SetKeyBoardData(int playernum, KeyData keydata);
-	void Encode(int object_index);
+	ObjectData* Encode(int object_index);
 #endif
 
 };
@@ -356,7 +356,7 @@ int Connecter(char* ServerIp, int PortNum);
 int RecvPlayerNum();
 
 void Render();
-bool KeySender(char key, bool flag);
+bool KeySender(KeyData key_data);
 
 void RenderScene(void);
 void MouseInput(int button, int state, int x, int y);
@@ -367,7 +367,7 @@ void SpecialUpKeyInput(int key, int x, int y);
 
 #elif CONSOL==SERVER
 class PlayerData {
-	SOCKET	sock;			//? -이거 필요해 ?
+	SOCKET	sock;			// Game.DataSender() 에서 사용
 	int		gamenum;		//-플레이어가 속해있는 게임의 번호
 	int		playerIndex;	//-플레이어 캐릭터의 오브젝트 인덱스
 
@@ -389,11 +389,11 @@ class PlayerManager {
 	int MakeGame();
 	int MakePlayer(int game_index);
 
-	void SendPlayerNum(int player_index);
+	void SendPlayerNum(int player_index, SOCKET client_sock);
 
 };
 
 void DataSender();
-void Encoder(GameObjectManager* GOMgr);
+ObjectData* Encoder(GameObjectManager* GOMgr);
 
 #endif
