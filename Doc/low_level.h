@@ -83,7 +83,6 @@ struct ObjectData {
 	char	vel_1;	//상태가 생성일 경우 오브젝트 타입이 되고 이외의 경우 점수가 된다.
 };
 //-----------------------------------------------------------------------------------
-
 class GameObject {
 private:
 	int 위치_x;
@@ -107,8 +106,28 @@ public:
 
 };
 //-----------------------------------------------------------------------------------
+class Creature :GameObject {
+private:
 
-class Player : GameObject {
+
+public:
+
+
+#if CONSOL==CLIENT
+public:
+	virtual void Render();
+	virtual void Decode(ObjectData object_data);
+
+#elif CONSOL==SERVER
+public:
+	virtual void Update(float eTime);
+	virtual ObjectData Encode();
+};
+
+
+//-----------------------------------------------------------------------------------
+
+class Player : Creature {
 private:
 	int 점수;
 	CImage* 이미지;
@@ -129,7 +148,7 @@ public:
 };
 //-----------------------------------------------------------------------------------
 
-class Enemy : GameObject {
+class Enemy : Creature {
 private:
 	CImage 이미지;
 
@@ -343,7 +362,7 @@ private:
 
 public:
 	void Update(float eTime);
-	void SetKeyBoardData(int playernum, KeyData keydata);
+	void SetKeyBoardData(int player_num, KeyData keydata);
 	ObjectData* Encode(int object_index);
 #endif
 
@@ -394,6 +413,7 @@ class PlayerManager {
 };
 
 void DataSender();
+void KeyRecevier();
 ObjectData* Encoder(GameObjectManager* GOMgr);
 
 #endif
