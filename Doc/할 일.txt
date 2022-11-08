@@ -1,0 +1,3 @@
+Server에서 
+keyboardmanager에 임계영역을 걸면 
+키 입력이 계속되면 update를 안 할 수 있지 않을까?

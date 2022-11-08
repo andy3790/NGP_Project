@@ -385,7 +385,7 @@ void SpecialKeyInput(int key, int x, int y);
 void SpecialUpKeyInput(int key, int x, int y);
 
 #elif CONSOL==SERVER
-class PlayerData {
+struct PlayerData {
 	SOCKET	sock;			// Game.DataSender() 에서 사용
 	int		gamenum;		//-플레이어가 속해있는 게임의 번호
 	int		playerIndex;	//-플레이어 캐릭터의 오브젝트 인덱스
@@ -401,9 +401,11 @@ class Game {
 };
 
 class PlayerManager {
-	Game game[MAX_GAME_NUM];
-	PlayerData* players[MAX_GAME_NUM * 2];
+private:
+	Game* m_ppGame[MAX_GAME_NUM];
+	PlayerData* m_ppPlayers[MAX_GAME_NUM * 2];
 
+public:
 	int CheckGame();
 	int MakeGame();
 	int MakePlayer(int game_index);

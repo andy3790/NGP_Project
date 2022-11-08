@@ -48,3 +48,4 @@
 *.suo
 *.db
 *.vcxproj
+*.ipch
