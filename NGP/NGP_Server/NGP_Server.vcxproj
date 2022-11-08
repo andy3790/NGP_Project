@@ -78,6 +78,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
+    <IncludePath>C:\Users\yyyyw\Desktop\넷겜플\NGP_Project\NGP\share;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
@@ -146,10 +147,10 @@
     <ClCompile Include="PlayerManager.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\share\GameObject.h" />
+    <ClInclude Include="..\share\GameObjectManager.h" />
+    <ClInclude Include="..\share\Global.h" />
     <ClInclude Include="Game.h" />
-    <ClInclude Include="GameObject.h" />
-    <ClInclude Include="GameObjectManager.h" />
-    <ClInclude Include="Global.h" />
     <ClInclude Include="NGP_struct.h" />
     <ClInclude Include="PlayerManager.h" />
     <ClInclude Include="utill.h" />

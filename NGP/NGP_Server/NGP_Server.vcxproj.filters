@@ -32,9 +32,6 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Global.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
     <ClInclude Include="utill.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
@@ -44,13 +41,16 @@
     <ClInclude Include="Game.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="GameObjectManager.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
     <ClInclude Include="NGP_struct.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="GameObject.h">
+    <ClInclude Include="..\share\GameObject.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="..\share\GameObjectManager.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="..\share\Global.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>
