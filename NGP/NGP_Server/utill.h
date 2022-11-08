@@ -1,5 +1,5 @@
 #pragma once
-#include"Global.h"
+#include"Consol.h"
 
 
 void err_quit(const char* msg)

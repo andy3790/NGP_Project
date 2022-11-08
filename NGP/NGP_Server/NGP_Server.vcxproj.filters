@@ -44,13 +44,7 @@
     <ClInclude Include="NGP_struct.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="..\share\GameObject.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="..\share\GameObjectManager.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="..\share\Global.h">
+    <ClInclude Include="Consol.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>

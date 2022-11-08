@@ -1,5 +1,5 @@
 
-#include"Global.h"
+#include"Consol.h"
 #include"utill.h"
 
 #include"PlayerManager.h"

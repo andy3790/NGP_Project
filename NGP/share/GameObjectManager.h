@@ -1,5 +1,5 @@
 #pragma once
-#include"Global.h"
+#include"Consol.h"
 #include"GameObject.h"
 #include"NGP_struct.h"
 

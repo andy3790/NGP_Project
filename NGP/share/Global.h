@@ -14,10 +14,9 @@
 #pragma comment (lib,"msimg32.lib")
 #pragma comment(lib, "ws2_32") // ws2_32.lib ¸µÅ©
 
+
 #define CLIENT 0
 #define SERVER 1
-#define CONSOL SERVER
-
 
 #define SERVERPORT 9000
 #define BUFSIZE    512

@@ -147,12 +147,10 @@
     <ClCompile Include="PlayerManager.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\share\GameObject.h" />
-    <ClInclude Include="..\share\GameObjectManager.h" />
-    <ClInclude Include="..\share\Global.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="NGP_struct.h" />
     <ClInclude Include="PlayerManager.h" />
+    <ClInclude Include="Consol.h" />
     <ClInclude Include="utill.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
