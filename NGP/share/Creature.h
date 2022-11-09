@@ -3,7 +3,9 @@
 
 class Creature : GameObject {
 private:
-
+	int		m_maxHp;	// 최대 Hp
+	int		m_hp;		// 현재 Hp
+	bool	m_direct;	// 바라보는 방향
 
 public:
 

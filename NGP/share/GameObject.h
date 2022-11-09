@@ -3,6 +3,11 @@
 
 class GameObject{
 private:
+	enum dir {
+		left,
+		right
+	};
+
 	int 위치_x;
 	int 위치_y;
 
