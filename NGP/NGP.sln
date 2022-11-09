@@ -9,9 +9,20 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "NGP_Client", "NGP_Client\NG
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "솔루션 항목", "솔루션 항목", "{AE47F0A4-15F4-40CA-A964-AF80B37CDA1A}"
 	ProjectSection(SolutionItems) = preProject
+		share\BackGround.h = share\BackGround.h
+		share\Base.h = share\Base.h
+		share\Bird.h = share\Bird.h
+		share\Brick.h = share\Brick.h
+		share\Creature.h = share\Creature.h
+		share\Enemy.h = share\Enemy.h
 		share\GameObject.h = share\GameObject.h
 		share\GameObjectManager.h = share\GameObjectManager.h
 		share\Global.h = share\Global.h
+		share\MapObject.h = share\MapObject.h
+		share\Plant.h = share\Plant.h
+		share\Player.h = share\Player.h
+		share\Projectile.h = share\Projectile.h
+		share\Wolf.h = share\Wolf.h
 	EndProjectSection
 EndProject
 Global
