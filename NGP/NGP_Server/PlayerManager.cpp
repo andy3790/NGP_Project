@@ -2,11 +2,16 @@
 
 int PlayerManager::GetEmptyGame()
 {
-	return 0;
+	return -1;
 }
 
 int PlayerManager::CheckGame()
 {
+	int game_id = GetEmptyGame();
+	if (game_id == -1)
+	{
+		// 오류발생
+	}
 	return 0;
 }
 
