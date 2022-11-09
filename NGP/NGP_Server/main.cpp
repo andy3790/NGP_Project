@@ -47,7 +47,12 @@ int main()
 			//err_display("accept()");
 			break;
 		}
-		PM.CheckGame();
+		int game_id = PM.CheckGame();
+		if (game_id == -1)
+		{
+			// 치명적 오류 발생?
+		}
+
 		PM.MakeGame();
 		PM.MakePlayer(0);
 		PM.SendPlayerNum(0,NULL);

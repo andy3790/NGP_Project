@@ -5,6 +5,12 @@
 
 
 class PlayerManager {
+public:
+	enum error {
+		NO_EMPTY_GAME = -100,
+		FAILED_MAKE_NEW_GAME,
+		FAILED_MAKE_NEW_PLAYER
+	};
 private:
 	Game* m_ppGame[MAX_GAME_NUM];
 	PlayerData* m_ppPlayers[MAX_GAME_NUM * 2];

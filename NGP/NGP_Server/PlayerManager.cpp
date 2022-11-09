@@ -2,29 +2,32 @@
 
 int PlayerManager::GetEmptyGame()
 {
-	return -1;
+	return NO_EMPTY_GAME;
 }
 
 int PlayerManager::CheckGame()
 {
 	int game_id = GetEmptyGame();
-	if (game_id == -1)
+	if (game_id == NO_EMPTY_GAME)
 	{
-		// 오류발생
+		// 빈 게임이 없음.
+		game_id = MakeGame();
 	}
-	return 0;
+
+	return game_id;
 }
 
 int PlayerManager::MakeGame()
 {
-	return 0;
+	return FAILED_MAKE_NEW_GAME;
 }
 
 int PlayerManager::MakePlayer(int game_index)
 {
-	return 0;
+	return FAILED_MAKE_NEW_PLAYER;
 }
 
 void PlayerManager::SendPlayerNum(int player_index, SOCKET client_sock)
 {
+
 }
