@@ -23,6 +23,7 @@
 
 #define MAX_OBJECT_COUNT	1000			// 한 맵에 존재할 수 있는 최대 GameObject 개수	***임시값
 #define MAX_GAME_NUM 	1					// 서버가 생성할 수 있는 최대 게임의 개수		***임시값
+#define MAX_PLAYER_NUM 	2					// 게임 안에 생성할 수 있는 최대 플레이어의 개수***임시값
 
 // 키 매핑용 Define
 #define KEY_JUMP	('KEY_JUMP_1' || 'KEY_JUMP_2')	// 미정

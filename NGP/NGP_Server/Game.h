@@ -4,9 +4,30 @@
 
 
 class Game{
+public:
+	enum error {
+		DEFAULT_ERROR = -100,
+	};
+private:
 	GameObjectManager* GOMgr;
-	PlayerData* PD[2];
+	PlayerData* m_ppPlayers[2];
 
+public:
+	Game() {
+		GOMgr = new GameObjectManager;
+		for (int i = 0;i < MAX_PLAYER_NUM;i++)
+		{
+			m_ppPlayers[i] = NULL;
+		}
+	}
+	~Game() {
+		;// 할당 해제
+	}
+	int CheckPlayer();				// player_num 확인, 반환
+	void SetPlayerData(int game_index, int player_num, int player_index, SOCKET client_sock);
+	int AddObject(GameObject* new_object);	// 생성된 오브젝트 인덱스 반환
+	
+	
 	void Update(float eTime);
 	bool DataSender();
 };

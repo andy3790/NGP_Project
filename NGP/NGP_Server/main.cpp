@@ -47,15 +47,27 @@ int main()
 			//err_display("accept()");
 			break;
 		}
+
 		int game_id = PM.CheckGame();
-		if (game_id == -1)
+		if (game_id < 0)
 		{
+			break;
 			// 치명적 오류 발생?
 		}
 
-		PM.MakeGame();
-		PM.MakePlayer(0);
-		PM.SendPlayerNum(0,NULL);
+		int player_index = PM.MakePlayer(game_id, client_sock);
+		if (player_index < 0)
+		{
+			switch (player_index)
+			{
+			case PlayerManager::FAILED_MAKE_NEW_PLAYER:
+				// 기타등등 오류처리
+				break;
+			};
+			break;
+			// 오류 발생.?
+		}
+		PM.SendPlayerNum(player_index, client_sock);
 	}
 
 	// 소켓 닫기
