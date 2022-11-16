@@ -12,6 +12,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "솔루션 항목", "솔루�
 		share\GameObject.h = share\GameObject.h
 		share\GameObjectManager.h = share\GameObjectManager.h
 		share\Global.h = share\Global.h
+		share\NGP_struct.h = share\NGP_struct.h
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "GameObject", "GameObject", "{47D22E3F-16A6-4507-97CD-DEA3959F38C5}"

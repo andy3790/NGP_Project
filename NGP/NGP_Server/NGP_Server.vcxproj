@@ -160,7 +160,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h" />
-    <ClInclude Include="NGP_struct.h" />
     <ClInclude Include="PlayerManager.h" />
     <ClInclude Include="Consol.h" />
     <ClInclude Include="utill.h" />
