@@ -1,6 +1,6 @@
 #include "Player.h"
 
-void Player::Render(HDC hDC, HBITMAP hBitmap)
+void Player::Render(HDC hDC, HBITMAP hBitmap, RECT WndRect)
 {
 	HDC memDC, mem2DC, mem3DC;
 	HBITMAP tempBitmap, tempBitmap2;
@@ -137,32 +137,8 @@ void Player::Render(HDC hDC, HBITMAP hBitmap)
 	DeleteObject(IBrush);
 	IBrush = CreateSolidBrush(RGB(204, 0, 0));
 	oldBrush = (HBRUSH)SelectObject(memIDC, IBrush);
-	Rectangle(memIDC, 180, 130, GetNowHp() * 3 + 180, 160); // 현재체력바
+	Rectangle(memIDC, 180, 130, GetHp() * 3 + 180, 160); // 현재체력바
 	SelectObject(memIDC, oldBrush);
-
-	SetBkMode(memIDC, TRANSPARENT);
-	SetBkMode(memDC, TRANSPARENT);
-	SetTextColor(memIDC, RGB(255, 255, 255));
-	SetTextColor(memDC, RGB(255, 255, 255));
-
-	hFont = CreateFont(20, 0, 0, 0, 0, 0, 0, 0, HANGEUL_CHARSET, 0, 0, 0,
-		VARIABLE_PITCH | FF_ROMAN, TEXT("궁서"));
-	oldFont = (HFONT)SelectObject(memIDC, hFont);
-
-	TCHAR str[20];
-	wsprintf(str, L"%d / %d", GetNowHp(), GetMaxHp());
-	TextOut(memIDC, GetMaxHp() * 3 / 2 - 40 + 180, 135, str, _tcslen(str));
-	SelectObject(memIDC, oldFont);
-
-
-	oldFont = (HFONT)SelectObject(memDC, hFont);
-	wsprintf(str, L"Score : %d", Score);
-	TextOut(memDC, WndRect.right - 150 + *StartPrintX, WndRect.top + 50, str, _tcslen(str));
-
-	SelectObject(memDC, oldFont);
-	DeleteObject(hFont);
-
-	TransparentBlt(memDC, *StartPrintX, WndRect.bottom / 6 * 5, WndRect.right, WndRect.bottom / 6, memIDC, 0, 0, WndRect.right, WndRect.bottom / 6, RGB(255, 0, 255));
 
 	SelectObject(memIDC, oldIBitmap);
 	DeleteObject(hBitmap_Interface);
