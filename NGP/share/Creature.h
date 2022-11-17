@@ -8,6 +8,16 @@ private:
 	bool	m_direct;	// 바라보는 방향
 
 public:
+	// set()
+	void SetHp(int vel) { m_hp = vel; }
+	void SetMaxHp(int vel) { m_maxHp = vel; }
+	void SetDirect(bool vel) { m_direct = vel; }
+
+	// get()
+	int GetHp() { return m_hp; }
+	int GetMaxHp() { return m_maxHp; }
+	bool GetDirect() { return m_direct; }
+
 
 #if CONSOL==CLIENT
 public:
