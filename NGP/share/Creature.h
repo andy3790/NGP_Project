@@ -18,6 +18,11 @@ public:
 	int GetMaxHp() { return m_maxHp; }
 	bool GetDirect() { return m_direct; }
 
+	// chagne()
+	void ChangeHp(int vel) { m_hp += vel; }
+	void ChangeMaxHp(int vel) { m_hp += vel; }
+	void ChangeDirect() { m_direct = !m_direct; }
+
 
 #if CONSOL==CLIENT
 public:

@@ -30,7 +30,7 @@ void Player::Render(HDC hDC, HBITMAP hBitmap, RECT WndRect)
 			}
 			for (int i = 0; i < 5; i++) {
 				if (GetDashPt(i) > 0) {
-					if (GetDirect() == P_RIGHT) { StretchBlt(mem1DC_PL, 0, 0, (GetSpriteSizeX(), GetSpriteSizeY(), mem2DC_PL, GetNowanimation().x, GetNowanimation().y, GetSpriteSizeX(), GetSpriteSizeY(), SRCCOPY); }
+					if (GetDirect() == P_RIGHT) { StretchBlt(mem1DC_PL, 0, 0, GetSpriteSizeX(), GetSpriteSizeY(), mem2DC_PL, GetNowanimation().x, GetNowanimation().y, GetSpriteSizeX(), GetSpriteSizeY(), SRCCOPY); }
 					else { StretchBlt(mem1DC_PL, 0, 0, GetSpriteSizeX(), GetSpriteSizeY(), mem2DC_PL, GetNowanimation().x + GetSpriteSizeX() - 1, GetNowanimation().y, -GetSpriteSizeX(), GetSpriteSizeY(), SRCCOPY); }
 					TransparentBlt(memDC, GetDashPp(i).x, GetDashPp(i).y, GetPrintSizeX(), GetPrintSizeY(), mem1DC_PL, 0, 0, GetSpriteSizeX(), GetSpriteSizeY(), RGB(255, 0, 255));
 				}
