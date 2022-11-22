@@ -98,6 +98,9 @@ void SKILL::MakeSkill(int Select) {
 }
 
 void Player::MakePlayer(int actNum, int dir) {
+	// actNum = 플레이어가 할 수 있는 행동의 갯수
+	// dir = 플레이어가 생성될 때 바라보고 있는 방향
+
 	hBitmap_move = (HBITMAP)LoadImage(NULL, TEXT("./Resorce/Image/Player/Player_move.bmp"), IMAGE_BITMAP, 0, 0, LR_LOADFROMFILE);
 	hBitmap_attack = (HBITMAP)LoadImage(NULL, TEXT("./Resorce/Image/Player/Player_attack.bmp"), IMAGE_BITMAP, 0, 0, LR_LOADFROMFILE);
 	animation = (POINT**)malloc(sizeof(POINT*) * actNum);
@@ -290,4 +293,29 @@ void Player::Damage2PL(int Damage) {
 		Damaged = TRUE;
 		DamageTimer = 10;
 	}
+}
+
+
+void Player::Update(float eTime)
+{
+
+}
+
+ObjectData Player::Encode()
+{
+	//short	index;
+	//Pos		pos;
+	//STATE	state;
+	//char	hp;
+	//char	vel_1;	//상태가 생성일 경우 오브젝트 타입이 되고 이외의 경우 점수가 된다.
+
+	ObjectData obd;
+
+	obd.index = 0;
+	obd.pos = Pos(0, 0);
+	obd.state = ChnageAct2State(Player::Getact());
+	obd.hp = Creature::GetHp();
+	obd.vel_1 = 0;
+
+	return 
 }

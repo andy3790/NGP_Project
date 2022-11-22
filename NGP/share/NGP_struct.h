@@ -4,6 +4,9 @@
 struct Pos {
 	short	x;
 	short	y;
+
+	Pos() {};
+	Pos(short x, short y) : x(x), y(y) {};
 };
 
 struct KeyData {

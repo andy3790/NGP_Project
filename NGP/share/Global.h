@@ -78,3 +78,28 @@ enum class STATE : short {
 	skill_2,
 	skill_3
 };
+
+STATE ChnageAct2State(int act)
+{
+	switch (act)
+	{
+	case 0: // 대기
+		return STATE::idle;
+		break;
+	case 1: // 이동
+		return STATE::idle;
+		break;
+	case 2: // 공격 1-1
+		return STATE::idle;
+		break;
+	case 3: // 공격 1-2
+		return STATE::idle;
+		break;
+	case 4: // 공격 2-1
+		return STATE::idle;
+		break;
+	case 5: // 공격 2-2
+		return STATE::idle;
+		break;
+	}
+}
