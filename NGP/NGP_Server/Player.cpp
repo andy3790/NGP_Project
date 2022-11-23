@@ -317,5 +317,5 @@ ObjectData Player::Encode()
 	obd.hp = Creature::GetHp();
 	obd.vel_1 = 0;
 
-	return 
+	return obd;
 }

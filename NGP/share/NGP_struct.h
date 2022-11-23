@@ -5,7 +5,7 @@ struct Pos {
 	short	x;
 	short	y;
 
-	Pos() {};
+	Pos() : x(0), y(0) {};
 	Pos(short x, short y) : x(x), y(y) {};
 };
 

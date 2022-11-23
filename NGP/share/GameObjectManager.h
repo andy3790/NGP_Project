@@ -13,19 +13,7 @@ private:
 	GameObject* m_GameObjects[MAX_OBJECT_COUNT];
 
 public:
-	int AddObject(GameObject* new_object, int index)
-	{
-		if (m_GameObjects[index] == NULL)
-		{
-			m_GameObjects[index] = new_object;
-			return index;
-		}
-		else
-		{
-			return WRONG_INDEX;
-		}
-		return WRONG_INDEX;
-	};
+	int AddObject(GameObject* new_object, int index);
 	GameObject GetObject(int index);
 	bool DeleteObject(int index);
 

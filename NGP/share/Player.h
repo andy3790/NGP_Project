@@ -102,6 +102,26 @@ public:
 	BOOL UseSkill(int Skill_Num);
 	void Damage2PL(int Damage);
 
+	STATE ChnageAct2State(int act)
+	{
+		switch (act)
+		{
+		case 0: // 대기
+			break;
+		case 1: // 이동
+			break;
+		case 2: // 공격 1-1
+			break;
+		case 3: // 공격 1-2
+			break;
+		case 4: // 공격 2-1
+			break;
+		case 5: // 공격 2-2
+			break;
+		}
+		return STATE::idle;
+	}
+
 	//Set
 	void SetPrintPos(int x, int y) {
 		PrintPos.x = x; PrintPos.y = y;

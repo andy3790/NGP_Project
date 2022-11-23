@@ -1,4 +1,5 @@
 #include "PlayerManager.h"
+#include "Player.h"
 
 int PlayerManager::GetEmptyGame()
 {
@@ -34,7 +35,10 @@ int PlayerManager::CheckGame()
 
 int PlayerManager::MakeGame(int game_id)
 {
+	// 게임 생성 코드 구현해야함.
 	m_ppGame[game_id] = new Game; // 성공여부 검사해야함.
+
+
 	if (m_ppGame[game_id] == NULL)
 		return FAILED_MAKE_NEW_GAME;
 	else
@@ -48,8 +52,13 @@ int PlayerManager::MakePlayer(int game_index, SOCKET client_sock)
 		return FAILED_MAKE_NEW_PLAYER;
 	else
 	{
-		GameObject* player = NULL;
-		int player_index = m_ppGame[game_index]->AddObject(player);
+		// 아래 코드를 플레이어 생성하는 코드로 만든다.
+		Player* player = new Player;
+		player->MakePlayer(6, P_RIGHT); // 개선할 필요가 있다.
+		GameObject* GOplayer = (GameObject*)player;
+
+
+		int player_index = m_ppGame[game_index]->AddObject(GOplayer);
 		m_ppGame[game_index]->SetPlayerData(game_index, player_num, player_index, client_sock);
 		return player_index;
 	}
