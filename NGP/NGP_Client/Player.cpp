@@ -151,3 +151,100 @@ void Player::Decode(ObjectData object_data)
 {
 
 }
+
+
+BOOL Player::UseSkill(int Skill_Num) {
+	skillSlot[Skill_Num].count++;
+	if (skillSlot[Skill_Num].count == 0) {
+		int Checker = -1;
+		if (Skill_Num == P_USE_SKILL_1) { Checker = Skill_1; }
+		else if (Skill_Num == P_USE_SKILL_2) { Checker = Skill_2; }
+		else if (Skill_Num == P_USE_SKILL_3) { Checker = Ult; }
+
+		if (Checker == P_SKILL_1) {
+			if (skillSlot[Skill_Num].act == 0) {
+				if (GetDirect() == P_LEFT) { SetPrintPos(PrintPos.x + PrintSizeX - 150, PrintPos.y); }
+				SetPrintSizeX(150);
+				SetPrintSizeY(150);
+			}
+			else if (skillSlot[Skill_Num].act == 1) {
+				if (GetDirect() == P_LEFT) { SetPrintPos(PrintPos.x + PrintSizeX - 200, PrintPos.y); }
+				SetPrintSizeX(200);
+				SetPrintSizeY(160);
+				if (GetDirect() == P_LEFT) { ChangePrintPos(-200, 0); }
+				else { ChangePrintPos(200, 0); }
+			}
+			else if (skillSlot[Skill_Num].act == 2) {
+				if (GetDirect() == P_LEFT) { SetPrintPos(PrintPos.x + PrintSizeX - 160, PrintPos.y); }
+				SetPrintSizeX(160);
+				SetPrintSizeY(100);
+			}
+		}
+		else if (Checker == P_SKILL_2) {
+			if (skillSlot[Skill_Num].act == 0) {
+				if (GetDirect() == P_LEFT) { SetPrintPos(PrintPos.x + PrintSizeX - 120, PrintPos.y); }
+				SetPrintSizeX(120);
+				SetPrintSizeY(180);
+			}
+			else if (skillSlot[Skill_Num].act == 1) {
+				if (GetDirect() == P_LEFT) { SetPrintPos(PrintPos.x + PrintSizeX - 200, PrintPos.y); }
+				SetPrintSizeX(200);
+				SetPrintSizeY(160);
+			}
+			else if (skillSlot[Skill_Num].act == 2) {
+				if (GetDirect() == P_LEFT) { SetPrintPos(PrintPos.x + PrintSizeX - 240, PrintPos.y); }
+				SetPrintSizeX(240);
+				SetPrintSizeY(240);
+				if (GetDirect() == P_LEFT) { ChangePrintPos(-150, 0); }
+				else { ChangePrintPos(150, 0); }
+			}
+			else if (skillSlot[Skill_Num].act == 3) {
+				if (GetDirect() == P_LEFT) { SetPrintPos(PrintPos.x + PrintSizeX - 200, PrintPos.y); }
+				SetPrintSizeX(200);
+				SetPrintSizeY(200);
+			}
+		}
+		else if (Checker == P_ULT_1) {
+			if (skillSlot[Skill_Num].act == 0) {
+				if (GetDirect() == P_LEFT) { SetPrintPos(PrintPos.x + PrintSizeX - 200, PrintPos.y); }
+				SetPrintSizeX(200);
+				SetPrintSizeY(150);
+			}
+			else if (skillSlot[Skill_Num].act == 1) {
+				if (GetDirect() == P_LEFT) { SetPrintPos(PrintPos.x + PrintSizeX - 400, PrintPos.y); }
+				SetPrintSizeX(400);
+				SetPrintSizeY(170);
+			}
+			else if (skillSlot[Skill_Num].act == 2) {
+				if (GetDirect() == P_LEFT) { SetPrintPos(PrintPos.x + PrintSizeX - 180, PrintPos.y); }
+				SetPrintSizeX(180);
+				SetPrintSizeY(200);
+			}
+			else if (skillSlot[Skill_Num].act == 3) {
+				if (GetDirect() == P_LEFT) { SetPrintPos(PrintPos.x + PrintSizeX - 260, PrintPos.y); }
+				SetPrintSizeX(260);
+				SetPrintSizeY(170);
+			}
+			else if (skillSlot[Skill_Num].act == 4) {
+				if (GetDirect() == P_LEFT) { SetPrintPos(PrintPos.x + PrintSizeX - 1000, PrintPos.y); }
+				SetPrintSizeX(1000);
+				SetPrintSizeY(400);
+			}
+		}
+	}
+	if (skillSlot[Skill_Num].count >= skillSlot[Skill_Num].NumCount[skillSlot[Skill_Num].act]) {
+		skillSlot[Skill_Num].act++;
+		skillSlot[Skill_Num].count = -1;
+	}
+	if (skillSlot[Skill_Num].act >= skillSlot[Skill_Num].NumAct) {
+		skillSlot[Skill_Num].act = 0;
+		skillSlot[Skill_Num].count = -1;
+		if (PrintSizeX != 80 && GetDirect() == P_LEFT) {
+			SetPrintPos(PrintPos.x + PrintSizeX - 80, PrintPos.y);
+		}
+		SetPrintSizeX(80);
+		SetPrintSizeY(100);
+		return FALSE;
+	}
+	return TRUE;
+}
