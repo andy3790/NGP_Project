@@ -33,6 +33,6 @@ public:
 	
 	
 	void Update(float eTime);
-	bool DataSender();
+	bool DataSender(int player_num);
 };
 

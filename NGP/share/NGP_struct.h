@@ -26,7 +26,7 @@ struct ObjectData {
 struct PlayerData {
 	SOCKET	sock;			// Game.DataSender() 에서 사용
 	int		gamenum;		//-플레이어가 속해있는 게임의 번호
-	int		player_num;		// m_ppPlayers의 인덱스
+	int		player_num;		// m_ppPlayers의 인덱스. 0 or 1
 	int		playerIndex;	//-플레이어 캐릭터의 오브젝트 인덱스
 
 };

@@ -34,3 +34,16 @@ void GameObjectManager::InitGameObjects()
 		m_GameObjects[i] = NULL;
 	}
 }
+
+ObjectData* GameObjectManager::Encode()	// 오브젝트 데이터 배열을 반환.
+{
+	ObjectData Object_data[MAX_OBJECT_COUNT];
+	for (int i = 0;i < MAX_OBJECT_COUNT;i++)
+	{
+		if (m_GameObjects[i] == NULL)
+			continue;
+		Object_data[i] = m_GameObjects[i]->Encode();
+	}
+
+	return Object_data;
+} 

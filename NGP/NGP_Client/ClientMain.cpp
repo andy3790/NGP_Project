@@ -1,5 +1,6 @@
 #include"Consol.h"
 #include"utill.h"
+#include"NGP_struct.h"
 
 
 #include "GameObjectManager.h"
@@ -38,6 +39,16 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevinstance, LPSTR lpszCmdPa
 	serveraddr.sin_port = htons(SERVERPORT);
 	retval = connect(sock, (struct sockaddr*)&serveraddr, sizeof(serveraddr));
 	if (retval == SOCKET_ERROR) err_quit("connect()");
+
+	PlayerData player_data;
+
+	// 데이터 받기(playerIndex)								
+	retval = recv(sock, (char*)&player_data.playerIndex, sizeof(int), MSG_WAITALL);
+	if (retval == SOCKET_ERROR) {
+		//err_asdf("recv()", 0, threadNum * 4 + 4);
+	}
+
+	// ObjectData
 
 
 	// 윈도우 생성 부분

@@ -44,7 +44,7 @@ int main()
 		addrlen = sizeof(clientaddr);
 		client_sock = accept(listen_sock, (struct sockaddr*)&clientaddr, &addrlen);
 		if (client_sock == INVALID_SOCKET) {
-			//err_display("accept()");
+			err_display("accept()");
 			break;
 		}
 
@@ -55,19 +55,19 @@ int main()
 			// 치명적 오류 발생?
 		}
 
-		int player_index = PM.MakePlayer(game_id, client_sock);
-		if (player_index < 0)
+		int player_data_index = PM.MakePlayer(game_id, client_sock);
+		if (player_data_index < 0)
 		{
-			switch (player_index)
+			switch (player_data_index)
 			{
 			case PlayerManager::FAILED_MAKE_NEW_PLAYER:
 				// 기타등등 오류처리
 				break;
 			};
-			break;
+			break; // or exit(0);
 			// 오류 발생.?
 		}
-		PM.SendPlayerNum(player_index, client_sock);
+		PM.SendPlayerNum(player_data_index, client_sock);
 	}
 
 	// 소켓 닫기

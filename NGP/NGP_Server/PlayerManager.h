@@ -8,12 +8,13 @@ class PlayerManager {
 public:
 	enum error {
 		NO_EMPTY_GAME = -100,
+		NO_EMPTY_PLAYER_DATA,
 		FAILED_MAKE_NEW_GAME,
 		FAILED_MAKE_NEW_PLAYER
 	};
 private:
 	Game* m_ppGame[MAX_GAME_NUM];
-	//PlayerData* m_ppPlayers[MAX_GAME_NUM * 2];
+	PlayerData* m_ppPlayers[MAX_GAME_NUM * 2];
 
 public:
 	PlayerManager() {
@@ -21,19 +22,20 @@ public:
 		{
 			m_ppGame[i] = NULL;
 		}
-		//for (int i = 0;i < MAX_GAME_NUM * 2;i++)
-		//{
-		//	m_ppPlayers[i] = NULL;
-		//}
+		for (int i = 0;i < MAX_GAME_NUM * 2;i++)
+		{
+			m_ppPlayers[i] = NULL;
+		}
 	}
 	~PlayerManager() {
 		// 얘는 동적할당이 아니야 아직?
 	}
 	int GetEmptyGame();
+	int GetEmptyPlayerData();
 	int CheckGame();
 	int MakeGame(int game_id);
 	int MakePlayer(int game_index, SOCKET client_sock);
-
 	void SendPlayerNum(int player_index, SOCKET client_sock);
+	int SetPlayerData(int game_index, int player_num, int player_index, SOCKET client_sock);
 };
 

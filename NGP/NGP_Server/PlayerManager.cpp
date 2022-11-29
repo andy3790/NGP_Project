@@ -3,16 +3,19 @@
 
 int PlayerManager::GetEmptyGame()
 {
-	int playerIndex;
+	int player_num;
 	// 게임 배열을 돌면서 플레이어 자리 확인
+	// 이미 생성되어 있는 게임 중 빈 자리를 먼저 찾고, 없으면 새로 생성한다.
 	for (int i = 0;i < MAX_GAME_NUM;i++)
 	{
 		if (m_ppGame[i] == NULL)
+		{
 			return i;
 			break;
+		}
 
-		playerIndex = m_ppGame[i]->CheckPlayer();
-		if (playerIndex < 0)
+		player_num = m_ppGame[i]->CheckPlayer();
+		if (player_num < 0)
 			// 게임에 빈 자리 없음
 			continue;
 		else
@@ -21,6 +24,22 @@ int PlayerManager::GetEmptyGame()
 	}
 
 	return NO_EMPTY_GAME;
+}
+
+int PlayerManager::GetEmptyPlayerData()
+{
+	//int player_data_index;
+	// 게임 배열을 돌면서 플레이어 자리 확인
+	for (int i = 0;i < MAX_GAME_NUM * 2;i++)
+	{
+		if (m_ppPlayers[i] == NULL)
+		{
+			return i;
+			break;
+		}
+	}
+
+	return NO_EMPTY_PLAYER_DATA;
 }
 
 int PlayerManager::CheckGame()
@@ -32,7 +51,10 @@ int PlayerManager::CheckGame()
 		std::cout << "빈 게임이 없음" << std::endl;
 		exit(1);
 	}
-	game_id = MakeGame(game_id);
+	if (m_ppGame[game_id] == NULL)
+	{
+		game_id = MakeGame(game_id);
+	}
 
 	return game_id;
 }
@@ -63,13 +85,49 @@ int PlayerManager::MakePlayer(int game_index, SOCKET client_sock)
 
 
 		int player_index = m_ppGame[game_index]->AddObject(GOplayer);
-		m_ppGame[game_index]->SetPlayerData(game_index, player_num, player_index, client_sock);
-		return player_index;
+		int player_data_index = SetPlayerData(game_index, player_num, player_index, client_sock);
+		return player_data_index;
 	}
 
 }
 
-void PlayerManager::SendPlayerNum(int player_index, SOCKET client_sock)
+void PlayerManager::SendPlayerNum(int player_data_index, SOCKET client_sock)
 {
+	int retval;
 
+	// 게임을 생성할 데이터와 플레이어 오브젝트 인덱스를 보내야 한다.
+	int game_index = m_ppPlayers[player_data_index]->gamenum;
+	int player_num = m_ppPlayers[player_data_index]->player_num;
+	int playerIndex = m_ppPlayers[player_data_index]->playerIndex;
+	SOCKET sock = m_ppPlayers[player_data_index]->sock;
+
+	// 플레이어 오브젝트의 인덱스 번호도 보내줘야함.
+	retval = send(sock, (char*)&playerIndex, sizeof(int), 0);
+	if (retval == SOCKET_ERROR) {
+		//err_display("send() playerIndex");
+		std::cout << "send() playerIndex" << std::endl;
+		exit(0);
+	}
+
+	// 데이터를 보내주는 함수. 아직 정의 없음.
+	m_ppGame[game_index]->DataSender(player_num);
+}
+
+int PlayerManager::SetPlayerData(int game_index, int player_num, int player_index, SOCKET client_sock)
+{
+	// 게임에서도 설정.
+	m_ppGame[game_index]->SetPlayerData(game_index, player_num, player_index, client_sock);
+
+	// 자기것도 설정.
+
+	int player_data_index = GetEmptyPlayerData();
+	m_ppPlayers[player_data_index] = new PlayerData;
+
+	m_ppPlayers[player_data_index]->gamenum = game_index;
+	m_ppPlayers[player_data_index]->player_num = player_num;
+	m_ppPlayers[player_data_index]->playerIndex = player_index;
+	m_ppPlayers[player_data_index]->sock = client_sock;
+
+
+	return player_data_index;
 }

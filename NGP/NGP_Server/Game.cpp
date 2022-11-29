@@ -33,3 +33,15 @@ int Game::AddObject(GameObject* new_object)
     GOMgr->AddObject(new_object, index);
     return index;
 }
+
+bool Game::DataSender(int player_num)
+{
+    //bool flag;
+    ObjectData* object_data = GOMgr->Encode();
+
+    SOCKET sock = m_ppPlayers[player_num]->sock;
+    //배열의 데이터를 보낸다.
+    // 성공 실패 여부에 따라 리턴값 변경?
+
+    return false;
+}

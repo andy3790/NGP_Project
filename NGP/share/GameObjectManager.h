@@ -53,7 +53,7 @@ public:
 
 	void Update(float eTime);
 	void SetKeyBoardData(int player_num, KeyData keydata);
-	ObjectData* Encode(int object_index);
+	ObjectData* Encode(); // 오브젝트 데이터 배열을 반환.
 #endif
 
 };
