@@ -248,3 +248,8 @@ BOOL Player::UseSkill(int Skill_Num) {
 	}
 	return TRUE;
 }
+
+void Player::MakePlayer(int actNum, int dir)
+{
+	return;
+}

@@ -19,8 +19,20 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="BackGround.cpp" />
+    <ClCompile Include="Base.cpp" />
+    <ClCompile Include="Bird.cpp" />
+    <ClCompile Include="Brick.cpp" />
     <ClCompile Include="ClientMain.cpp" />
+    <ClCompile Include="Creature.cpp" />
+    <ClCompile Include="Enemy.cpp" />
+    <ClCompile Include="GameObject.cpp" />
+    <ClCompile Include="GameObjectManager.cpp" />
+    <ClCompile Include="MapObject.cpp" />
+    <ClCompile Include="Plant.cpp" />
     <ClCompile Include="Player.cpp" />
+    <ClCompile Include="Projectile.cpp" />
+    <ClCompile Include="Wolf.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\NGP_Server\utill.h" />

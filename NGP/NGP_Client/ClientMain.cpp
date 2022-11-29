@@ -85,8 +85,118 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevinstance, LPSTR lpszCmdPa
 }
 
 LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
+		PAINTSTRUCT ps;
+		HDC hDC;
+		static RECT WndRect; // 윈도우 창 RECT
 
-	return DefWindowProc(hWnd, uMsg, wParam, lParam);
+		bool Pause = false;
+	
+		static GameObject* PL = (GameObject*) new Player; // 플레이어 구조체
+	
+	
+		switch (uMsg)
+		{
+		case WM_CREATE:
+			//mciSendString(L"open bgm.mp3 type mpegvideo alias mp3", NULL, 0, NULL);
+			//mciSendString(L"play bgm.mp3 repeat", NULL, 0, NULL);
+			//mciSendString(L"setaudio bgm.mp3 volume to 100", NULL, 0, NULL);
+	
+			hDC = GetDC(hWnd);
+			GetClientRect(hWnd, &WndRect);
+	
+			((Player*)PL)->MakePlayer(6, P_RIGHT);
+	
+			((Player*)PL)->DashTimer = ((Player*)PL)->GetDashCT();
+			ReleaseDC(hWnd, hDC);
+			break;
+		case WM_PAINT:
+			hDC = BeginPaint(hWnd, &ps);
+
+			EndPaint(hWnd, &ps);
+			break;
+		case WM_LBUTTONDOWN:
+			if (!Pause && !((Player*)PL)->UsingSkill) {
+				if (((Player*)PL)->Getact() <= 1) { ((Player*)PL)->Setact(2); ((Player*)PL)->SetNextAct(3); ((Player*)PL)->Setcount(3); }
+				else if (((Player*)PL)->Getact() == 3 && ((Player*)PL)->GetNextAct() == 0) { ((Player*)PL)->SetNextAct(4); }
+			}
+			break;
+		case WM_RBUTTONDOWN:
+			if (!Pause && !((Player*)PL)->UsingSkill) {
+				if (((Player*)PL)->DashTimer == ((Player*)PL)->GetDashCT() && ((Player*)PL)->Getact() == 1) {
+					if (GetAsyncKeyState('D') & 0x8000) {
+						((Player*)PL)->DashTimer = 0;
+					}
+					else if (GetAsyncKeyState('A') & 0x8000) {
+						((Player*)PL)->DashTimer = 0;
+					}
+				}
+			}
+			break;
+		case WM_MOUSEMOVE:
+	
+			break;
+		case WM_KEYDOWN:
+			if (wParam == VK_ESCAPE || ((Creature*)PL)->GetHp() <= 0) {
+				DestroyWindow(hWnd);
+			}
+			else if (wParam == 'p' || wParam == 'P') { // Pause
+				((Player*)PL)->SetSpeed(5);
+				if (((Player*)PL)->Getact() == 1) { ((Player*)PL)->Setact(0); }
+				Pause = !Pause;
+			}
+			if (!Pause && !((Player*)PL)->UsingSkill) {
+				if (/*wParam == 'w' || wParam == 'W'*/wParam == VK_SPACE) { // Jump
+					//if (((Player*)PL)->GetJump() == 0) { ((Player*)PL)->ChangePrintPos(0, -(Gravity + 1)); JumpTimer = MaxJumpTimer; SetTimer(hWnd, 5100, 10, NULL); ((Player*)PL)->ChangeJump(1); }
+					//else if (((Player*)PL)->GetJump() == 1) { JumpTimer = MaxJumpTimer; SetTimer(hWnd, 5100, 10, NULL); ((Player*)PL)->ChangeJump(1); Gravity = 1; }
+				}
+				else if (wParam == 'a' || wParam == 'A') {
+				}
+				else if (wParam == 's' || wParam == 'S') {
+				}
+				else if (wParam == 'd' || wParam == 'D') {
+				}
+				else if (wParam == VK_SHIFT) {
+					((Player*)PL)->SetSpeed(8);
+				}
+				else if ((wParam == 'q' || wParam == 'Q') && ((Player*)PL)->GetS1CT() <= 0) { // 스킬 1번
+					((Player*)PL)->SetS1CT(((Player*)PL)->GetS1MCT());
+					((Player*)PL)->UsingSkillNum = P_USE_SKILL_1;
+					((Player*)PL)->UsingSkill = ((Player*)PL)->UseSkill(((Player*)PL)->UsingSkillNum);
+				}
+				else if ((wParam == 'e' || wParam == 'E') && ((Player*)PL)->GetS2CT() <= 0) { // 스킬 2번
+					((Player*)PL)->SetS2CT(((Player*)PL)->GetS2MCT());
+					((Player*)PL)->UsingSkillNum = P_USE_SKILL_2;
+					((Player*)PL)->UsingSkill = ((Player*)PL)->UseSkill(((Player*)PL)->UsingSkillNum);
+				}
+				else if ((wParam == 'r' || wParam == 'R') && ((Player*)PL)->GetUltCT() <= 0) { // 궁
+					((Player*)PL)->SetUltCT(((Player*)PL)->GetUltMCT());
+					((Player*)PL)->UsingSkillNum = P_USE_SKILL_3;
+					((Player*)PL)->UsingSkill = ((Player*)PL)->UseSkill(((Player*)PL)->UsingSkillNum);
+				}
+			}
+			break;
+		case WM_KEYUP:
+			if (!Pause) {
+				if (wParam == 'w' || wParam == 'W') {
+				}
+				else if (wParam == 'a' || wParam == 'A') {
+					if (((Player*)PL)->Getact() == 1) { ((Player*)PL)->Setact(0); }
+				}
+				else if (wParam == 's' || wParam == 'S') {
+				}
+				else if (wParam == 'd' || wParam == 'D') {
+					if (((Player*)PL)->Getact() == 1) { ((Player*)PL)->Setact(0); }
+				}
+				else if (wParam == VK_SHIFT) {
+					((Player*)PL)->SetSpeed(5);
+				}
+			}
+			break;
+		case WM_DESTROY:
+			PostQuitMessage(0);
+			break;
+		}
+		return DefWindowProc(hWnd, uMsg, wParam, lParam);
 }
 
 

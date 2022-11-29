@@ -26,7 +26,7 @@ public:
 
 #if CONSOL==CLIENT
 public:
-	virtual void Render();
+	virtual void Render(HDC hDC, HBITMAP hBitmap, RECT WndRect);
 	virtual void Decode(ObjectData object_data);
 
 #elif CONSOL==SERVER

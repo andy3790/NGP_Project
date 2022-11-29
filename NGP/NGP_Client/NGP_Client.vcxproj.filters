@@ -13,12 +13,60 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="GameObject">
+      <UniqueIdentifier>{86bc1567-fa12-4bcd-b261-ee8b43594c8e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameObject\Creature">
+      <UniqueIdentifier>{2c3e0bca-00ab-4b41-8e26-d5992ff01a72}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameObject\Creature\Enemy">
+      <UniqueIdentifier>{e629ee35-9273-4e69-9c98-eaf8fb35b23c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameObject\MapObject">
+      <UniqueIdentifier>{1791a10a-57e7-4e2c-a0ef-aa177816834d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Player.cpp">
+    <ClCompile Include="ClientMain.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="ClientMain.cpp">
+    <ClCompile Include="Base.cpp">
+      <Filter>GameObject\Creature\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="Bird.cpp">
+      <Filter>GameObject\Creature\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="Plant.cpp">
+      <Filter>GameObject\Creature\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="Wolf.cpp">
+      <Filter>GameObject\Creature\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="BackGround.cpp">
+      <Filter>GameObject\MapObject</Filter>
+    </ClCompile>
+    <ClCompile Include="Brick.cpp">
+      <Filter>GameObject\MapObject</Filter>
+    </ClCompile>
+    <ClCompile Include="Creature.cpp">
+      <Filter>GameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="MapObject.cpp">
+      <Filter>GameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="Projectile.cpp">
+      <Filter>GameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="Enemy.cpp">
+      <Filter>GameObject\Creature</Filter>
+    </ClCompile>
+    <ClCompile Include="Player.cpp">
+      <Filter>GameObject\Creature</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObject.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObjectManager.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>
