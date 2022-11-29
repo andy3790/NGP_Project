@@ -1,6 +1,11 @@
+#include"Consol.h"
+#include"utill.h"
+
+
 #include "GameObjectManager.h"
 #include "Player.h"
 
+char* SERVERIP = (char*)"127.0.0.1";
 
 //#ifdef _DEBUG
 //#pragma comment(linker, "/entry:WinMainCRTStartup /subsystem:console")
@@ -14,6 +19,28 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevinstance, LPSTR lpszCmdParam, int nCmdShow)
 {
+	// 서버 연결 
+	int retval;
+	// 윈속 초기화
+	WSADATA wsa;
+	if (WSAStartup(MAKEWORD(2, 2), &wsa) != 0)
+		return 1;
+
+	// 소켓 생성
+	SOCKET sock = socket(AF_INET, SOCK_STREAM, 0);
+	if (sock == INVALID_SOCKET) err_quit("socket()");
+
+	// connect()
+	struct sockaddr_in serveraddr;
+	memset(&serveraddr, 0, sizeof(serveraddr));
+	serveraddr.sin_family = AF_INET;
+	inet_pton(AF_INET, SERVERIP, &serveraddr.sin_addr);
+	serveraddr.sin_port = htons(SERVERPORT);
+	retval = connect(sock, (struct sockaddr*)&serveraddr, sizeof(serveraddr));
+	if (retval == SOCKET_ERROR) err_quit("connect()");
+
+
+	// 윈도우 생성 부분
 	HWND hWnd;
 	MSG Message;
 	WNDCLASSEX WndClass;
@@ -46,6 +73,14 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevinstance, LPSTR lpszCmdPa
 		TranslateMessage(&Message);
 		DispatchMessageW(&Message);
 	}
+
+	// 이것들은 위치가 달라져도 될듯
+	// 소켓 닫기
+	closesocket(sock);
+
+	// 윈속 종료
+	WSACleanup();
+
 	return Message.wParam;
 }
 

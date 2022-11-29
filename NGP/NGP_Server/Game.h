@@ -15,6 +15,10 @@ private:
 public:
 	Game() {
 		GOMgr = new GameObjectManager;
+		if (GOMgr == NULL)
+		{
+			std::cout << "GOM생성 실패" << std::endl;
+		}
 		for (int i = 0;i < MAX_PLAYER_NUM;i++)
 		{
 			m_ppPlayers[i] = NULL;

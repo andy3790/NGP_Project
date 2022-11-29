@@ -26,3 +26,11 @@ int GameObjectManager::AddObject(GameObject* new_object, int index)
 	}
 	return WRONG_INDEX;
 };
+
+void GameObjectManager::InitGameObjects()
+{
+	for (int i = 0;i < MAX_OBJECT_COUNT;i++)
+	{
+		m_GameObjects[i] = NULL;
+	}
+}

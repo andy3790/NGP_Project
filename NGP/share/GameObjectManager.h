@@ -13,9 +13,16 @@ private:
 	GameObject* m_GameObjects[MAX_OBJECT_COUNT];
 
 public:
+	GameObjectManager() {
+		InitGameObjects();
+
+	}
+
 	int AddObject(GameObject* new_object, int index);
 	GameObject GetObject(int index);
 	bool DeleteObject(int index);
+	void InitGameObjects();
+
 
 #if CONSOL==CLIENT
 private:
@@ -40,6 +47,7 @@ public:
 private:
 
 public:
+	
 
 	int GetEmptyIndex();
 

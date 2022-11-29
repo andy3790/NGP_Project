@@ -15,6 +15,8 @@ int Game::CheckPlayer()
 
 void Game::SetPlayerData(int game_index, int player_num, int player_index, SOCKET client_sock)
 {
+    m_ppPlayers[player_num] = new PlayerData;
+
     m_ppPlayers[player_num]->gamenum = game_index;
     m_ppPlayers[player_num]->player_num = player_num;
     m_ppPlayers[player_num]->playerIndex = player_index;

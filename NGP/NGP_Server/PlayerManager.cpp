@@ -8,13 +8,15 @@ int PlayerManager::GetEmptyGame()
 	for (int i = 0;i < MAX_GAME_NUM;i++)
 	{
 		if (m_ppGame[i] == NULL)
-			//return NO_EMPTY_GAME;
+			return i;
 			break;
 
-			playerIndex = m_ppGame[i]->CheckPlayer();
-		if (playerIndex == -1)
+		playerIndex = m_ppGame[i]->CheckPlayer();
+		if (playerIndex < 0)
+			// 게임에 빈 자리 없음
 			continue;
 		else
+			// 게임에 빈 자리가 있음
 			return i;
 	}
 
@@ -27,8 +29,10 @@ int PlayerManager::CheckGame()
 	if (game_id == NO_EMPTY_GAME)
 	{
 		// 빈 게임이 없음.
-		game_id = MakeGame(game_id);
+		std::cout << "빈 게임이 없음" << std::endl;
+		exit(1);
 	}
+	game_id = MakeGame(game_id);
 
 	return game_id;
 }
