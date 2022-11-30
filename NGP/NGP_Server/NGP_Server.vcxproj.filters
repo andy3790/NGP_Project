@@ -75,6 +75,9 @@
     <ClCompile Include="Brick.cpp">
       <Filter>GameObject\MapObject</Filter>
     </ClCompile>
+    <ClCompile Include="ServerThread.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="utill.h">
@@ -87,6 +90,9 @@
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="Consol.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="ServerThread.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>

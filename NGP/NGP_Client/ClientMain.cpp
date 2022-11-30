@@ -5,9 +5,10 @@
 
 #include "GameObjectManager.h"
 #include "Player.h"
+#include "KeyBoardManager.h"
 
 char* SERVERIP = (char*)"127.0.0.1";
-
+SOCKET sock;
 //#ifdef _DEBUG
 //#pragma comment(linker, "/entry:WinMainCRTStartup /subsystem:console")
 //#endif
@@ -28,7 +29,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevinstance, LPSTR lpszCmdPa
 		return 1;
 
 	// 家南 积己
-	SOCKET sock = socket(AF_INET, SOCK_STREAM, 0);
+	sock = socket(AF_INET, SOCK_STREAM, 0);
 	if (sock == INVALID_SOCKET) err_quit("socket()");
 
 	// connect()
@@ -49,6 +50,13 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevinstance, LPSTR lpszCmdPa
 	}
 
 	// ObjectData
+
+
+	// 胶饭靛 积己
+
+	// Render
+
+	// Recv
 
 
 	// 扩档快 积己 何盒
@@ -104,6 +112,12 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
 	
 		static GameObject* PL = (GameObject*) new Player; // 敲饭捞绢 备炼眉
 	
+		KeyBoardManager key_boardM_mnager;
+
+		bool flag;
+		int key_index;
+		int retval;
+
 	
 		switch (uMsg)
 		{
@@ -130,6 +144,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
 				if (((Player*)PL)->Getact() <= 1) { ((Player*)PL)->Setact(2); ((Player*)PL)->SetNextAct(3); ((Player*)PL)->Setcount(3); }
 				else if (((Player*)PL)->Getact() == 3 && ((Player*)PL)->GetNextAct() == 0) { ((Player*)PL)->SetNextAct(4); }
 			}
+			key_boardM_mnager.SetKey(KeyBoardManager::LButton, true);
+
 			break;
 		case WM_RBUTTONDOWN:
 			if (!Pause && !((Player*)PL)->UsingSkill) {
@@ -142,6 +158,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
 					}
 				}
 			}
+			key_boardM_mnager.SetKey(KeyBoardManager::LButton, true);
 			break;
 		case WM_MOUSEMOVE:
 	
@@ -185,6 +202,50 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
 					((Player*)PL)->UsingSkill = ((Player*)PL)->UseSkill(((Player*)PL)->UsingSkillNum);
 				}
 			}
+
+			key_index = -1;
+			switch (wParam)
+			{
+			case 'w':
+			case 'W':
+				key_index = KeyBoardManager::W;
+			case 'a':
+			case 'A':
+				key_index = KeyBoardManager::A;
+			case 's':
+			case 'S':
+				key_index = KeyBoardManager::S;
+			case 'd':
+			case 'D':
+				key_index = KeyBoardManager::D;
+			case 'q':
+			case 'Q':
+				key_index = KeyBoardManager::Q;
+			case 'e':
+			case 'E':
+				key_index = KeyBoardManager::E;
+			case 'r':
+			case 'R':
+				key_index = KeyBoardManager::R;
+			}
+			if (key_index < 0)
+				break;
+			flag = true;
+			key_boardM_mnager.SetKey(KeyBoardManager::LButton, flag);
+
+			retval = send(sock, (char*)&key_index, sizeof(int), 0);
+			if (retval == SOCKET_ERROR) {
+				//err_display("send() playerIndex");
+				std::cout << "send() key_index" << std::endl;
+				exit(0);
+			}
+			retval = send(sock, (char*)&flag, sizeof(bool), 0);
+			if (retval == SOCKET_ERROR) {
+				//err_display("send() playerIndex");
+				std::cout << "send() flag" << std::endl;
+				exit(0);
+			}
+
 			break;
 		case WM_KEYUP:
 			if (!Pause) {
@@ -201,6 +262,48 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
 				else if (wParam == VK_SHIFT) {
 					((Player*)PL)->SetSpeed(5);
 				}
+			}
+			key_index = -1;
+			switch (wParam)
+			{
+			case 'w':
+			case 'W':
+				key_index = KeyBoardManager::W;
+			case 'a':
+			case 'A':
+				key_index = KeyBoardManager::A;
+			case 's':
+			case 'S':
+				key_index = KeyBoardManager::S;
+			case 'd':
+			case 'D':
+				key_index = KeyBoardManager::D;
+			case 'q':
+			case 'Q':
+				key_index = KeyBoardManager::Q;
+			case 'e':
+			case 'E':
+				key_index = KeyBoardManager::E;
+			case 'r':
+			case 'R':
+				key_index = KeyBoardManager::R;
+			}
+			if (key_index < 0)
+				break;
+			flag = false;
+			key_boardM_mnager.SetKey(KeyBoardManager::LButton, flag);
+
+			retval = send(sock, (char*)&key_index, sizeof(int), 0);
+			if (retval == SOCKET_ERROR) {
+				//err_display("send() playerIndex");
+				std::cout << "send() key_index" << std::endl;
+				exit(0);
+			}
+			retval = send(sock, (char*)&flag, sizeof(bool), 0);
+			if (retval == SOCKET_ERROR) {
+				//err_display("send() playerIndex");
+				std::cout << "send() flag" << std::endl;
+				exit(0);
 			}
 			break;
 		case WM_DESTROY:

@@ -28,6 +28,7 @@
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="GameObjectManager.cpp" />
+    <ClCompile Include="KeyBoardManager.cpp" />
     <ClCompile Include="MapObject.cpp" />
     <ClCompile Include="Plant.cpp" />
     <ClCompile Include="Player.cpp" />
@@ -37,6 +38,7 @@
   <ItemGroup>
     <ClInclude Include="..\NGP_Server\utill.h" />
     <ClInclude Include="Consol.h" />
+    <ClInclude Include="KeyBoardManager.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
