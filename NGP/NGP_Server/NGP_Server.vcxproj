@@ -156,12 +156,14 @@
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="PlayerManager.cpp" />
     <ClCompile Include="Projectile.cpp" />
+    <ClCompile Include="ServerThread.cpp" />
     <ClCompile Include="Wolf.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h" />
     <ClInclude Include="PlayerManager.h" />
     <ClInclude Include="Consol.h" />
+    <ClInclude Include="ServerThread.h" />
     <ClInclude Include="utill.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

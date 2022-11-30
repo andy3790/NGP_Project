@@ -6,10 +6,12 @@
 
 #include "GameObjectManager.h"
 #include "Player.h"
+#include "KeyBoardManager.h"
 
 char* SERVERIP = (char*)"127.0.0.1";
 //char* SERVERIP = (char*)"192.168.20.66";
 
+SOCKET sock;
 //#ifdef _DEBUG
 //#pragma comment(linker, "/entry:WinMainCRTStartup /subsystem:console")
 //#endif
@@ -20,7 +22,7 @@ LPCTSTR lpszWindowName = L"Window Api Final Project";
 
 LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam);
 
-static GameObject* PL = (GameObject*) new Player; // ÇÃ·¹ÀÌ¾î ±¸Á¶Ã¼
+static GameObject* PL = (GameObject*) new Player; // ï¿½Ã·ï¿½ï¿½Ì¾ï¿½ ï¿½ï¿½ï¿½ï¿½Ã¼
 CRITICAL_SECTION cs;
 
 
@@ -45,15 +47,15 @@ DWORD WINAPI ProcessClient(LPVOID arg)
 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevinstance, LPSTR lpszCmdParam, int nCmdShow)
 {
-	// ¼­¹ö ¿¬°á 
+	// ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ 
 	int retval;
-	// À©¼Ó ÃÊ±âÈ­
+	// ï¿½ï¿½ï¿½ï¿½ ï¿½Ê±ï¿½È­
 	WSADATA wsa;
 	if (WSAStartup(MAKEWORD(2, 2), &wsa) != 0)
 		return 1;
 
-	// ¼ÒÄÏ »ý¼º
-	SOCKET sock = socket(AF_INET, SOCK_STREAM, 0);
+	// ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+	sock = socket(AF_INET, SOCK_STREAM, 0);
 	if (sock == INVALID_SOCKET) err_quit("socket()");
 
 	// connect()
@@ -67,7 +69,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevinstance, LPSTR lpszCmdPa
 
 	PlayerData player_data;
 
-	// µ¥ÀÌÅÍ ¹Þ±â(playerIndex)								
+	// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Þ±ï¿½(playerIndex)								
 	retval = recv(sock, (char*)&player_data.playerIndex, sizeof(int), MSG_WAITALL);
 	if (retval == SOCKET_ERROR) {
 		//err_asdf("recv()", 0, threadNum * 4 + 4);
@@ -84,7 +86,14 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevinstance, LPSTR lpszCmdPa
 	else { CloseHandle(hThread); }
 
 
-	// À©µµ¿ì »ý¼º ºÎºÐ
+	// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+
+	// Render
+
+	// Recv
+
+
+	// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Îºï¿½
 	HWND hWnd;
 	MSG Message;
 	WNDCLASSEX WndClass;
@@ -118,11 +127,11 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevinstance, LPSTR lpszCmdPa
 		DispatchMessageW(&Message);
 	}
 
-	// ÀÌ°ÍµéÀº À§Ä¡°¡ ´Þ¶óÁ®µµ µÉµí
-	// ¼ÒÄÏ ´Ý±â
+	// ï¿½Ì°Íµï¿½ï¿½ï¿½ ï¿½ï¿½Ä¡ï¿½ï¿½ ï¿½Þ¶ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Éµï¿½
+	// ï¿½ï¿½ï¿½ï¿½ ï¿½Ý±ï¿½
 	closesocket(sock);
 
-	// À©¼Ó Á¾·á
+	// ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 	WSACleanup();
 
 	return Message.wParam;
@@ -131,11 +140,18 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevinstance, LPSTR lpszCmdPa
 LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
 		PAINTSTRUCT ps;
 		HDC hDC;
-		static RECT WndRect; // À©µµ¿ì Ã¢ RECT
+		static RECT WndRect; // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Ã¢ RECT
 
 		bool Pause = false;
 	
-		//static GameObject* PL = (GameObject*) new Player; // ÇÃ·¹ÀÌ¾î ±¸Á¶Ã¼
+		static GameObject* PL = (GameObject*) new Player; // ï¿½Ã·ï¿½ï¿½Ì¾ï¿½ ï¿½ï¿½ï¿½ï¿½Ã¼
+	
+		KeyBoardManager key_boardM_mnager;
+
+		bool flag;
+		int key_index;
+		int retval;
+
 	
 		switch (uMsg)
 		{
@@ -167,6 +183,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
 				if (((Player*)PL)->Getact() <= 1) { ((Player*)PL)->Setact(2); ((Player*)PL)->SetNextAct(3); ((Player*)PL)->Setcount(3); }
 				else if (((Player*)PL)->Getact() == 3 && ((Player*)PL)->GetNextAct() == 0) { ((Player*)PL)->SetNextAct(4); }
 			}
+			key_boardM_mnager.SetKey(KeyBoardManager::LButton, true);
+
 			break;
 		case WM_RBUTTONDOWN:
 			if (!Pause && !((Player*)PL)->UsingSkill) {
@@ -179,6 +197,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
 					}
 				}
 			}
+			key_boardM_mnager.SetKey(KeyBoardManager::LButton, true);
 			break;
 		case WM_MOUSEMOVE:
 	
@@ -206,22 +225,66 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
 				else if (wParam == VK_SHIFT) {
 					((Player*)PL)->SetSpeed(8);
 				}
-				else if ((wParam == 'q' || wParam == 'Q') && ((Player*)PL)->GetS1CT() <= 0) { // ½ºÅ³ 1¹ø
+				else if ((wParam == 'q' || wParam == 'Q') && ((Player*)PL)->GetS1CT() <= 0) { // ï¿½ï¿½Å³ 1ï¿½ï¿½
 					((Player*)PL)->SetS1CT(((Player*)PL)->GetS1MCT());
 					((Player*)PL)->UsingSkillNum = P_USE_SKILL_1;
 					((Player*)PL)->UsingSkill = ((Player*)PL)->UseSkill(((Player*)PL)->UsingSkillNum);
 				}
-				else if ((wParam == 'e' || wParam == 'E') && ((Player*)PL)->GetS2CT() <= 0) { // ½ºÅ³ 2¹ø
+				else if ((wParam == 'e' || wParam == 'E') && ((Player*)PL)->GetS2CT() <= 0) { // ï¿½ï¿½Å³ 2ï¿½ï¿½
 					((Player*)PL)->SetS2CT(((Player*)PL)->GetS2MCT());
 					((Player*)PL)->UsingSkillNum = P_USE_SKILL_2;
 					((Player*)PL)->UsingSkill = ((Player*)PL)->UseSkill(((Player*)PL)->UsingSkillNum);
 				}
-				else if ((wParam == 'r' || wParam == 'R') && ((Player*)PL)->GetUltCT() <= 0) { // ±Ã
+				else if ((wParam == 'r' || wParam == 'R') && ((Player*)PL)->GetUltCT() <= 0) { // ï¿½ï¿½
 					((Player*)PL)->SetUltCT(((Player*)PL)->GetUltMCT());
 					((Player*)PL)->UsingSkillNum = P_USE_SKILL_3;
 					((Player*)PL)->UsingSkill = ((Player*)PL)->UseSkill(((Player*)PL)->UsingSkillNum);
 				}
 			}
+
+			key_index = -1;
+			switch (wParam)
+			{
+			case 'w':
+			case 'W':
+				key_index = KeyBoardManager::W;
+			case 'a':
+			case 'A':
+				key_index = KeyBoardManager::A;
+			case 's':
+			case 'S':
+				key_index = KeyBoardManager::S;
+			case 'd':
+			case 'D':
+				key_index = KeyBoardManager::D;
+			case 'q':
+			case 'Q':
+				key_index = KeyBoardManager::Q;
+			case 'e':
+			case 'E':
+				key_index = KeyBoardManager::E;
+			case 'r':
+			case 'R':
+				key_index = KeyBoardManager::R;
+			}
+			if (key_index < 0)
+				break;
+			flag = true;
+			key_boardM_mnager.SetKey(KeyBoardManager::LButton, flag);
+
+			retval = send(sock, (char*)&key_index, sizeof(int), 0);
+			if (retval == SOCKET_ERROR) {
+				//err_display("send() playerIndex");
+				std::cout << "send() key_index" << std::endl;
+				exit(0);
+			}
+			retval = send(sock, (char*)&flag, sizeof(bool), 0);
+			if (retval == SOCKET_ERROR) {
+				//err_display("send() playerIndex");
+				std::cout << "send() flag" << std::endl;
+				exit(0);
+			}
+
 			break;
 		case WM_KEYUP:
 			if (!Pause) {
@@ -239,6 +302,48 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
 					((Player*)PL)->SetSpeed(5);
 				}
 			}
+			key_index = -1;
+			switch (wParam)
+			{
+			case 'w':
+			case 'W':
+				key_index = KeyBoardManager::W;
+			case 'a':
+			case 'A':
+				key_index = KeyBoardManager::A;
+			case 's':
+			case 'S':
+				key_index = KeyBoardManager::S;
+			case 'd':
+			case 'D':
+				key_index = KeyBoardManager::D;
+			case 'q':
+			case 'Q':
+				key_index = KeyBoardManager::Q;
+			case 'e':
+			case 'E':
+				key_index = KeyBoardManager::E;
+			case 'r':
+			case 'R':
+				key_index = KeyBoardManager::R;
+			}
+			if (key_index < 0)
+				break;
+			flag = false;
+			key_boardM_mnager.SetKey(KeyBoardManager::LButton, flag);
+
+			retval = send(sock, (char*)&key_index, sizeof(int), 0);
+			if (retval == SOCKET_ERROR) {
+				//err_display("send() playerIndex");
+				std::cout << "send() key_index" << std::endl;
+				exit(0);
+			}
+			retval = send(sock, (char*)&flag, sizeof(bool), 0);
+			if (retval == SOCKET_ERROR) {
+				//err_display("send() playerIndex");
+				std::cout << "send() flag" << std::endl;
+				exit(0);
+			}
 			break;
 		case WM_DESTROY:
 			PostQuitMessage(0);
@@ -253,9 +358,9 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
 //
 //	PAINTSTRUCT ps;
 //	HDC hDC;
-//	static RECT WndRect; // À©µµ¿ì Ã¢ RECT
+//	static RECT WndRect; // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Ã¢ RECT
 //	int mx, my;
-//	static int StartPrintX; // ¸Ê Ä«¸Þ¶ó ½ÃÀÛÁ¡
+//	static int StartPrintX; // ï¿½ï¿½ Ä«ï¿½Þ¶ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 //	static int Gravity, G_acceleration;
 //	static int JumpTimer, MaxJumpTimer;
 //	static BOOL Pause, StopMove, StopAct;
@@ -267,13 +372,13 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
 //	static MapObject Map;
 //	static int Map_num = MAP1;
 //
-//	static Enemy E[10]; // Àû ±¸Á¶Ã¼
+//	static Enemy E[10]; // ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ã¼
 //	static int enemyNum;
 //	static int e_counter;
 //	static int score;
 //
-//	//static Player PL; // ÇÃ·¹ÀÌ¾î ±¸Á¶Ã¼
-//	static GameObject* PL = (GameObject*) new Player; // ÇÃ·¹ÀÌ¾î ±¸Á¶Ã¼
+//	//static Player PL; // ï¿½Ã·ï¿½ï¿½Ì¾ï¿½ ï¿½ï¿½ï¿½ï¿½Ã¼
+//	static GameObject* PL = (GameObject*) new Player; // ï¿½Ã·ï¿½ï¿½Ì¾ï¿½ ï¿½ï¿½ï¿½ï¿½Ã¼
 //
 //	//static POINT star;
 //
@@ -537,21 +642,21 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
 //			else if (wParam == VK_SHIFT) {
 //				((Player*)PL)->SetSpeed(8);
 //			}
-//			else if ((wParam == 'q' || wParam == 'Q') && ((Player*)PL)->GetS1CT() <= 0) { // ½ºÅ³ 1¹ø
+//			else if ((wParam == 'q' || wParam == 'Q') && ((Player*)PL)->GetS1CT() <= 0) { // ï¿½ï¿½Å³ 1ï¿½ï¿½
 //				KillTimer(hWnd, 1001);
 //				KillTimer(hWnd, 1002);
 //				((Player*)PL)->SetS1CT(((Player*)PL)->GetS1MCT());
 //				((Player*)PL)->UsingSkillNum = P_USE_SKILL_1;
 //				((Player*)PL)->UsingSkill = ((Player*)PL)->UseSkill(((Player*)PL)->UsingSkillNum);
 //			}
-//			else if ((wParam == 'e' || wParam == 'E') && ((Player*)PL)->GetS2CT() <= 0) { // ½ºÅ³ 2¹ø
+//			else if ((wParam == 'e' || wParam == 'E') && ((Player*)PL)->GetS2CT() <= 0) { // ï¿½ï¿½Å³ 2ï¿½ï¿½
 //				KillTimer(hWnd, 1001);
 //				KillTimer(hWnd, 1002);
 //				((Player*)PL)->SetS2CT(((Player*)PL)->GetS2MCT());
 //				((Player*)PL)->UsingSkillNum = P_USE_SKILL_2;
 //				((Player*)PL)->UsingSkill = ((Player*)PL)->UseSkill(((Player*)PL)->UsingSkillNum);
 //			}
-//			else if ((wParam == 'r' || wParam == 'R') && ((Player*)PL)->GetUltCT() <= 0) { // ±Ã
+//			else if ((wParam == 'r' || wParam == 'R') && ((Player*)PL)->GetUltCT() <= 0) { // ï¿½ï¿½
 //				KillTimer(hWnd, 1001);
 //				KillTimer(hWnd, 1002);
 //				((Player*)PL)->SetUltCT(((Player*)PL)->GetUltMCT());
