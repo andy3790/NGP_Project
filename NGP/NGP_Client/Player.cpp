@@ -1,5 +1,104 @@
 #include "Player.h"
 
+
+
+void SKILL::MakeSkill(int Select) {
+	if (Select == P_SKILL_1) {
+		hBitmap = (HBITMAP)LoadImage(NULL, TEXT("../Resorce/Image/Player/SK1.bmp"), IMAGE_BITMAP, 0, 0, LR_LOADFROMFILE);
+		act = 0;
+		count = -1;
+		NumAct = 3;
+		NumCount = (int*)malloc(sizeof(int) * NumAct);
+		SpriteSizeX = (int*)malloc(sizeof(int) * NumAct);
+		SpriteSizeY = (int*)malloc(sizeof(int) * NumAct);
+
+		NumCount[0] = 5;
+		NumCount[1] = 1;
+		NumCount[2] = 5;
+		SpriteSizeX[0] = 60;
+		SpriteSizeY[0] = 60;
+		SpriteSizeX[1] = 100;
+		SpriteSizeY[1] = 80;
+		SpriteSizeX[2] = 75;
+		SpriteSizeY[2] = 40;
+
+		animation = (POINT**)malloc(sizeof(POINT*) * NumAct);
+		for (int i = 0; i < NumAct; i++) {
+			animation[i] = (POINT*)malloc(sizeof(POINT) * NumCount[i]);
+		}
+		for (int j = 0; j < NumCount[0]; j++) { animation[0][j] = { SpriteSizeX[0] * j, 0 }; }
+		for (int j = 0; j < NumCount[1]; j++) { animation[1][j] = { SpriteSizeX[1] * j, SpriteSizeY[0] }; }
+		for (int j = 0; j < NumCount[2]; j++) { animation[2][j] = { SpriteSizeX[2] * j, SpriteSizeY[0] + SpriteSizeY[1] }; }
+	}
+	else if (Select == P_SKILL_2) {
+		hBitmap = (HBITMAP)LoadImage(NULL, TEXT("../Resorce/Image/Player/SK2.bmp"), IMAGE_BITMAP, 0, 0, LR_LOADFROMFILE);
+		act = 0;
+		count = -1;
+		NumAct = 4;
+		NumCount = (int*)malloc(sizeof(int) * NumAct);
+		SpriteSizeX = (int*)malloc(sizeof(int) * NumAct);
+		SpriteSizeY = (int*)malloc(sizeof(int) * NumAct);
+
+		NumCount[0] = 8;
+		NumCount[1] = 7;
+		NumCount[2] = 6;
+		NumCount[3] = 4;
+		SpriteSizeX[0] = 45;
+		SpriteSizeY[0] = 70;
+		SpriteSizeX[1] = 80;
+		SpriteSizeY[1] = 60;
+		SpriteSizeX[2] = 90;
+		SpriteSizeY[2] = 90;
+		SpriteSizeX[3] = 80;
+		SpriteSizeY[3] = 80;
+
+		animation = (POINT**)malloc(sizeof(POINT*) * NumAct);
+		for (int i = 0; i < NumAct; i++) {
+			animation[i] = (POINT*)malloc(sizeof(POINT) * NumCount[i]);
+		}
+		for (int j = 0; j < NumCount[0]; j++) { animation[0][j] = { SpriteSizeX[0] * j, 0 }; }
+		for (int j = 0; j < NumCount[1]; j++) { animation[1][j] = { SpriteSizeX[1] * j, SpriteSizeY[0] }; }
+		for (int j = 0; j < NumCount[2]; j++) { animation[2][j] = { SpriteSizeX[2] * j, SpriteSizeY[0] + SpriteSizeY[1] }; }
+		for (int j = 0; j < NumCount[3]; j++) { animation[3][j] = { SpriteSizeX[3] * j, SpriteSizeY[0] + SpriteSizeY[1] + SpriteSizeY[2] }; }
+	}
+	else if (Select == P_ULT_1) {
+		hBitmap = (HBITMAP)LoadImage(NULL, TEXT("../Resorce/Image/Player/Ult.bmp"), IMAGE_BITMAP, 0, 0, LR_LOADFROMFILE);
+		act = 0;
+		count = -1;
+		NumAct = 5;
+		NumCount = (int*)malloc(sizeof(int) * NumAct);
+		SpriteSizeX = (int*)malloc(sizeof(int) * NumAct);
+		SpriteSizeY = (int*)malloc(sizeof(int) * NumAct);
+
+		NumCount[0] = 6;
+		NumCount[1] = 4;
+		NumCount[2] = 6;
+		NumCount[3] = 8;
+		NumCount[4] = 5;
+		SpriteSizeX[0] = 135;
+		SpriteSizeY[0] = 100;
+		SpriteSizeX[1] = 300;
+		SpriteSizeY[1] = 120;
+		SpriteSizeX[2] = 125;
+		SpriteSizeY[2] = 150;
+		SpriteSizeX[3] = 180;
+		SpriteSizeY[3] = 120;
+		SpriteSizeX[4] = 400;
+		SpriteSizeY[4] = 180;
+
+		animation = (POINT**)malloc(sizeof(POINT*) * NumAct);
+		for (int i = 0; i < NumAct; i++) {
+			animation[i] = (POINT*)malloc(sizeof(POINT) * NumCount[i]);
+		}
+		for (int j = 0; j < NumCount[0]; j++) { animation[0][j] = { SpriteSizeX[0] * j, 0 }; }
+		for (int j = 0; j < NumCount[1]; j++) { animation[1][j] = { SpriteSizeX[1] * j, SpriteSizeY[0] }; }
+		for (int j = 0; j < NumCount[2]; j++) { animation[2][j] = { SpriteSizeX[2] * j, SpriteSizeY[0] + SpriteSizeY[1] }; }
+		for (int j = 0; j < NumCount[3]; j++) { animation[3][j] = { SpriteSizeX[3] * j, SpriteSizeY[0] + SpriteSizeY[1] + SpriteSizeY[2] }; }
+		for (int j = 0; j < NumCount[4]; j++) { animation[4][j] = { SpriteSizeX[4] * j, SpriteSizeY[0] + SpriteSizeY[1] + SpriteSizeY[2] + SpriteSizeY[3] }; }
+
+	}
+}
+
 void Player::Render(HDC hDC, HBITMAP hBitmap, RECT WndRect)
 {
 	HDC memDC, mem2DC, mem3DC;
@@ -145,11 +244,31 @@ void Player::Render(HDC hDC, HBITMAP hBitmap, RECT WndRect)
 	DeleteObject(IBrush);
 	DeleteDC(memIDC);
 	DeleteDC(memRIDC);
+
+	BitBlt(hDC, WndRect.left, WndRect.top, WndRect.right, WndRect.bottom, memDC, 0, 0, SRCCOPY);
 }
 
 void Player::Decode(ObjectData object_data)
 {
+	//short	index;
+	//Pos		pos;
+	//STATE	state;
+	//char	hp;
+	//char	vel_1;	//상태가 생성일 경우 오브젝트 타입이 되고 이외의 경우 점수가 된다.
 
+	PrintPos.x = object_data.pos.x;
+	PrintPos.y = object_data.pos.y;
+	MidPos.x = PrintPos.x + PrintSizeX / 2;
+	MidPos.y = PrintPos.y + PrintSizeY / 2;
+	LBPos.x = PrintPos.x;
+	LBPos.y = PrintPos.y + PrintSizeY;
+
+	if (object_data.state == STATE::left)
+		SetDirect(P_LEFT);
+	else if (object_data.state == STATE::right)
+		SetDirect(P_RIGHT);
+
+	SetHp(object_data.hp);
 }
 
 
@@ -251,5 +370,91 @@ BOOL Player::UseSkill(int Skill_Num) {
 
 void Player::MakePlayer(int actNum, int dir)
 {
+	hBitmap_move = (HBITMAP)LoadImage(NULL, TEXT("../Resorce/Image/Player/Player_move.bmp"), IMAGE_BITMAP, 0, 0, LR_LOADFROMFILE);
+	hBitmap_attack = (HBITMAP)LoadImage(NULL, TEXT("../Resorce/Image/Player/Player_attack.bmp"), IMAGE_BITMAP, 0, 0, LR_LOADFROMFILE);
+	animation = (POINT**)malloc(sizeof(POINT*) * actNum);
+
+	act = 0;
+	Nextact = 0;
+	count = 0;
+	PrintPos = { 100,500 };
+	PrintSizeX = 80;
+	PrintSizeY = 100;
+	MidPos.x = PrintPos.x + PrintSizeX / 2;
+	MidPos.y = PrintPos.y + PrintSizeY / 2;
+	LBPos = { PrintPos.x,PrintPos.y + PrintSizeY };
+	NumAct = actNum;
+	NumCount = (int*)malloc(sizeof(int) * NumAct);
+	NumCount[0] = 3; // 대기
+	NumCount[1] = 4; // 이동
+	NumCount[2] = 4; // 공격 1-1
+	NumCount[3] = 3; // 공격 1-2
+	NumCount[4] = 2; // 공격 2-1
+	NumCount[5] = 3; // 공격 2-2
+
+	for (int i = 0; i < actNum; i++) {
+		animation[i] = (POINT*)malloc(sizeof(POINT) * NumCount[i]);
+	}
+	SpriteSizeX = (int*)malloc(sizeof(int) * NumAct);
+	SpriteSizeY = (int*)malloc(sizeof(int) * NumAct);
+	SpriteSizeX[0] = 67; SpriteSizeY[0] = 75;
+	SpriteSizeX[1] = 104; SpriteSizeY[1] = 76;
+	SpriteSizeX[2] = 37; SpriteSizeY[2] = 34;
+	SpriteSizeX[3] = 71; SpriteSizeY[3] = 39;
+	SpriteSizeX[4] = 32; SpriteSizeY[4] = 56;
+	SpriteSizeX[5] = 52; SpriteSizeY[5] = 53;
+
+	for (int j = 0; j < NumCount[0]; ++j) { animation[0][j] = { SpriteSizeX[0] * j, 0 }; }
+	for (int j = 0; j < NumCount[1]; ++j) { animation[1][j] = { SpriteSizeX[1] * j, SpriteSizeY[0] }; }
+	for (int j = 0; j < NumCount[2]; ++j) { animation[2][j] = { SpriteSizeX[2] * j, 0 }; }
+	for (int j = 0; j < NumCount[3]; ++j) { animation[3][j] = { SpriteSizeX[3] * j, SpriteSizeY[2] }; }
+	for (int j = 0; j < NumCount[4]; ++j) { animation[4][j] = { SpriteSizeX[4] * j, SpriteSizeY[2] + SpriteSizeY[3] }; }
+	for (int j = 0; j < NumCount[5]; ++j) { animation[5][j] = { SpriteSizeX[5] * j, SpriteSizeY[2] + SpriteSizeY[3] + SpriteSizeY[4] }; }
+
+	//Direct = dir;
+	SetDirect(dir);
+
+	//MaxHp = 100;
+	//NowHp = MaxHp;
+	SetMaxHp(100);
+	SetHp(GetMaxHp());
+	Speed = 5;
+	DashSpeed = 20;
+	AttackDamage = 7;
+
+	Jump = 0;
+	Attack = FALSE;
+	Crouch = FALSE;
+	Damaged = FALSE;
+
+	DamageTimer = 10;
+	AttackCoolTime = 10;
+	DashCoolTime = 50;
+
+	Skill_1 = P_SKILL_1;
+	Skill_2 = P_SKILL_2;
+	Ult = P_ULT_1;
+
+	Skill_1_MaxCoolTime = 800;
+	Skill_2_MaxCoolTime = 1000;
+	Ult_MaxCoolTime = 15000;
+
+	Skill_1_CoolTime = 0;
+	Skill_2_CoolTime = 0;
+	Ult_CoolTime = 0;
+
+	skillSlot[0].MakeSkill(Skill_1);
+	skillSlot[1].MakeSkill(Skill_2);
+	skillSlot[2].MakeSkill(Ult);
+
+	//UsingSkill = FALSE;
+	UsingSkill = TRUE;
+	UsingSkillNum = -1;
+
+	for (int i = 0; i < 5; i++) {
+		DashPrintPos[i] = { 0, 0 };
+		DashPrintTimer[i] = 0;
+	}
+
 	return;
 }

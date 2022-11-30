@@ -119,6 +119,12 @@ public:
 		case 5: // АјАн 2-2
 			break;
 		}
+
+		if (GetDirect() == P_LEFT)
+			return STATE::left;
+		else if (GetDirect() == P_RIGHT)
+			return STATE::right;
+
 		return STATE::idle;
 	}
 

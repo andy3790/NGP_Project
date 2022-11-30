@@ -298,7 +298,7 @@ void Player::Damage2PL(int Damage) {
 
 void Player::Update(float eTime)
 {
-
+	
 }
 
 ObjectData Player::Encode()
@@ -312,8 +312,8 @@ ObjectData Player::Encode()
 	ObjectData obd;
 
 	obd.index = 0;
-	obd.pos = Pos(0, 0);
-	obd.state = ChnageAct2State(Player::Getact());
+	obd.pos = Pos(PrintPos.x, PrintPos.y);
+	obd.state = ChnageAct2State(Getact());
 	obd.hp = Creature::GetHp();
 	obd.vel_1 = 0;
 

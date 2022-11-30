@@ -1,3 +1,4 @@
+#define _CRT_SECURE_NO_WARNINGS
 #include"Consol.h"
 #include"utill.h"
 #include"NGP_struct.h"
@@ -7,6 +8,7 @@
 #include "Player.h"
 
 char* SERVERIP = (char*)"127.0.0.1";
+//char* SERVERIP = (char*)"192.168.20.66";
 
 //#ifdef _DEBUG
 //#pragma comment(linker, "/entry:WinMainCRTStartup /subsystem:console")
@@ -17,6 +19,29 @@ LPCTSTR lpszClass = L"Window Class Name";
 LPCTSTR lpszWindowName = L"Window Api Final Project";
 
 LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam);
+
+static GameObject* PL = (GameObject*) new Player; // 플레이어 구조체
+CRITICAL_SECTION cs;
+
+
+DWORD WINAPI ProcessClient(LPVOID arg)
+{
+	int retval;
+
+	SOCKET sock = (SOCKET)arg;
+	ObjectData data;
+
+	retval = recv(sock, (char*)&data, sizeof(ObjectData), MSG_WAITALL);
+	if (retval == SOCKET_ERROR) {
+		//err_asdf("recv()", 0, threadNum * 4 + 4);
+	}
+	EnterCriticalSection(&cs);
+	((Player*)PL)->Decode(data);
+	LeaveCriticalSection(&cs);
+
+	return 0;
+}
+
 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevinstance, LPSTR lpszCmdParam, int nCmdShow)
 {
@@ -49,6 +74,14 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevinstance, LPSTR lpszCmdPa
 	}
 
 	// ObjectData
+
+	InitializeCriticalSection(&cs);
+
+	HANDLE hThread;
+	hThread = CreateThread(NULL, 0, ProcessClient,
+		&sock, 0, NULL);
+	if (hThread == NULL) { }
+	else { CloseHandle(hThread); }
 
 
 	// 윈도우 생성 부분
@@ -102,8 +135,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
 
 		bool Pause = false;
 	
-		static GameObject* PL = (GameObject*) new Player; // 플레이어 구조체
-	
+		//static GameObject* PL = (GameObject*) new Player; // 플레이어 구조체
 	
 		switch (uMsg)
 		{
@@ -118,11 +150,16 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
 			((Player*)PL)->MakePlayer(6, P_RIGHT);
 	
 			((Player*)PL)->DashTimer = ((Player*)PL)->GetDashCT();
+
 			ReleaseDC(hWnd, hDC);
 			break;
 		case WM_PAINT:
 			hDC = BeginPaint(hWnd, &ps);
-
+			HBITMAP hBitmap;
+			hBitmap = CreateCompatibleBitmap(hDC, WndRect.right * 2, WndRect.bottom);
+			EnterCriticalSection(&cs);
+			((Player*)PL)->Render(hDC, hBitmap, WndRect);
+			LeaveCriticalSection(&cs);
 			EndPaint(hWnd, &ps);
 			break;
 		case WM_LBUTTONDOWN:
