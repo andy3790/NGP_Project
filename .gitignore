@@ -49,3 +49,7 @@
 *.db
 *.vcxproj
 *.ipch
+
+/NGP/.vs
+/NGP/NGP_Client/x64
+/NGP/NGP_Server/x64
