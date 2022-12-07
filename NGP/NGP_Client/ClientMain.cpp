@@ -25,6 +25,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 static GameObject* PL = (GameObject*) new Player; // �÷��̾� ����ü
 CRITICAL_SECTION cs;
 
+KeyBoardManager key_board_manager;
 
 DWORD WINAPI ProcessClient(LPVOID arg)
 {
@@ -146,8 +147,6 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
 	
 		static GameObject* PL = (GameObject*) new Player; // �÷��̾� ����ü
 	
-		KeyBoardManager key_boardM_mnager;
-
 		bool flag;
 		int key_index;
 		int retval;
@@ -166,6 +165,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
 			((Player*)PL)->MakePlayer(6, P_RIGHT);
 	
 			((Player*)PL)->DashTimer = ((Player*)PL)->GetDashCT();
+			key_board_manager.reset();
 
 			ReleaseDC(hWnd, hDC);
 			break;
@@ -183,7 +183,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
 				if (((Player*)PL)->Getact() <= 1) { ((Player*)PL)->Setact(2); ((Player*)PL)->SetNextAct(3); ((Player*)PL)->Setcount(3); }
 				else if (((Player*)PL)->Getact() == 3 && ((Player*)PL)->GetNextAct() == 0) { ((Player*)PL)->SetNextAct(4); }
 			}
-			key_boardM_mnager.SetKey(KeyBoardManager::LButton, true);
+			key_board_manager.SetKey(KeyBoardManager::LButton, true);
 
 			break;
 		case WM_RBUTTONDOWN:
@@ -197,7 +197,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
 					}
 				}
 			}
-			key_boardM_mnager.SetKey(KeyBoardManager::LButton, true);
+			key_board_manager.SetKey(KeyBoardManager::LButton, true);
 			break;
 		case WM_MOUSEMOVE:
 	
@@ -243,47 +243,26 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
 			}
 
 			key_index = -1;
-			switch (wParam)
-			{
-			case 'w':
-			case 'W':
-				key_index = KeyBoardManager::W;
-			case 'a':
-			case 'A':
-				key_index = KeyBoardManager::A;
-			case 's':
-			case 'S':
-				key_index = KeyBoardManager::S;
-			case 'd':
-			case 'D':
-				key_index = KeyBoardManager::D;
-			case 'q':
-			case 'Q':
-				key_index = KeyBoardManager::Q;
-			case 'e':
-			case 'E':
-				key_index = KeyBoardManager::E;
-			case 'r':
-			case 'R':
-				key_index = KeyBoardManager::R;
-			}
+			key_board_manager.SelectKey(wParam, key_index);
 			if (key_index < 0)
 				break;
 			flag = true;
-			key_boardM_mnager.SetKey(KeyBoardManager::LButton, flag);
+			if (key_board_manager.SetKey(key_index, flag))
+			{
+				retval = send(sock, (char*)&key_index, sizeof(int), 0);
+				if (retval == SOCKET_ERROR) {
+					//err_display("send() playerIndex");
+					std::cout << "send() key_index" << std::endl;
+					exit(0);
+				}
+				retval = send(sock, (char*)&flag, sizeof(bool), 0);
+				if (retval == SOCKET_ERROR) {
+					//err_display("send() playerIndex");
+					std::cout << "send() flag" << std::endl;
+					exit(0);
+				}
+			}
 
-			retval = send(sock, (char*)&key_index, sizeof(int), 0);
-			if (retval == SOCKET_ERROR) {
-				//err_display("send() playerIndex");
-				std::cout << "send() key_index" << std::endl;
-				exit(0);
-			}
-			retval = send(sock, (char*)&flag, sizeof(bool), 0);
-			if (retval == SOCKET_ERROR) {
-				//err_display("send() playerIndex");
-				std::cout << "send() flag" << std::endl;
-				exit(0);
-			}
 
 			break;
 		case WM_KEYUP:
@@ -303,46 +282,24 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
 				}
 			}
 			key_index = -1;
-			switch (wParam)
-			{
-			case 'w':
-			case 'W':
-				key_index = KeyBoardManager::W;
-			case 'a':
-			case 'A':
-				key_index = KeyBoardManager::A;
-			case 's':
-			case 'S':
-				key_index = KeyBoardManager::S;
-			case 'd':
-			case 'D':
-				key_index = KeyBoardManager::D;
-			case 'q':
-			case 'Q':
-				key_index = KeyBoardManager::Q;
-			case 'e':
-			case 'E':
-				key_index = KeyBoardManager::E;
-			case 'r':
-			case 'R':
-				key_index = KeyBoardManager::R;
-			}
+			key_board_manager.SelectKey(wParam, key_index);
 			if (key_index < 0)
 				break;
 			flag = false;
-			key_boardM_mnager.SetKey(KeyBoardManager::LButton, flag);
-
-			retval = send(sock, (char*)&key_index, sizeof(int), 0);
-			if (retval == SOCKET_ERROR) {
-				//err_display("send() playerIndex");
-				std::cout << "send() key_index" << std::endl;
-				exit(0);
-			}
-			retval = send(sock, (char*)&flag, sizeof(bool), 0);
-			if (retval == SOCKET_ERROR) {
-				//err_display("send() playerIndex");
-				std::cout << "send() flag" << std::endl;
-				exit(0);
+			if (key_board_manager.SetKey(key_index, flag))
+			{
+				retval = send(sock, (char*)&key_index, sizeof(int), 0);
+				if (retval == SOCKET_ERROR) {
+					//err_display("send() playerIndex");
+					std::cout << "send() key_index" << std::endl;
+					exit(0);
+				}
+				retval = send(sock, (char*)&flag, sizeof(bool), 0);
+				if (retval == SOCKET_ERROR) {
+					//err_display("send() playerIndex");
+					std::cout << "send() flag" << std::endl;
+					exit(0);
+				}
 			}
 			break;
 		case WM_DESTROY:

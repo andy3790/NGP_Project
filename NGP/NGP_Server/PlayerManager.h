@@ -30,6 +30,12 @@ public:
 	~PlayerManager() {
 		// 얘는 동적할당이 아니야 아직?
 	}
+	// Geter, Seter
+	PlayerData* GstPlayerData(int player_data_index) { return m_ppPlayers[player_data_index]; };
+
+	void SetPlayerDataNULL(int player_data_index);
+
+
 	int GetEmptyGame();
 	int GetEmptyPlayerData();
 	int CheckGame();
@@ -37,5 +43,7 @@ public:
 	int MakePlayer(int game_index, SOCKET client_sock);
 	void SendPlayerNum(int player_index, SOCKET client_sock);
 	int SetPlayerData(int game_index, int player_num, int player_index, SOCKET client_sock);
+	void ShowInformation();
+
 };
 

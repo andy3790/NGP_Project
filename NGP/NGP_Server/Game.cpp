@@ -34,6 +34,24 @@ int Game::AddObject(GameObject* new_object)
     return index;
 }
 
+void Game::ShowInformation()
+{
+    for (int i = 0;i < MAX_PLAYER_NUM;i++)
+    {
+        if (m_ppPlayers[i] == NULL)
+        {
+            std::cout << i << " 번 플레이어----------------" << std::endl;
+            std::cout << "NULL" << std::endl;
+        }
+        else
+        {
+            std::cout << i << " 번 플레이어----------------" << std::endl;
+            std::cout << "NOT ? NULL" << std::endl;
+        }
+    }
+    std::cout << "-----------------------------" << std::endl;
+}
+
 bool Game::DataSender(int player_num)
 {
     //bool flag;
@@ -44,4 +62,16 @@ bool Game::DataSender(int player_num)
     // 성공 실패 여부에 따라 리턴값 변경?
 
     return false;
+}
+
+bool Game::SetPlayerDataNULL(int player_num)
+{
+    if (m_ppPlayers[player_num] != NULL)
+        m_ppPlayers[player_num] = NULL;
+    else
+    {
+        std::cout << "Game의 플레이어 데이터 리셋 중 오류 발생" << std::endl;
+        exit(0);
+    }
+    return 0;
 }

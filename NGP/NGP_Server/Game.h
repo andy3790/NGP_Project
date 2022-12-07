@@ -31,8 +31,10 @@ public:
 	void SetPlayerData(int game_index, int player_num, int player_index, SOCKET client_sock);
 	int AddObject(GameObject* new_object);	// 생성된 오브젝트 인덱스 반환
 	
+	void ShowInformation();
 	
 	void Update(float eTime);
 	bool DataSender(int player_num);
+	bool SetPlayerDataNULL(int player_num);
 };
 
