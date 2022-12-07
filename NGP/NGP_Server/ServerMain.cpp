@@ -54,6 +54,7 @@ DWORD WINAPI KeyRecv(LPVOID arg)
 	printf("[TCP 서버] 클라이언트 종료: IP 주소=%s, 포트 번호=%d\n",
 		addr, ntohs(clientaddr.sin_port));
 	PM.SetPlayerDataNULL(player_data_index);
+	PM.ShowInformation();
 	return 0;
 }
 

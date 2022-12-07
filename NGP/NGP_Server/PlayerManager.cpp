@@ -149,3 +149,15 @@ void PlayerManager::ShowInformation()
 		}
 	}
 }
+
+void PlayerManager::SetPlayerDataNULL(int player_data_index) {
+	m_ppGame[m_ppPlayers[player_data_index]->gamenum]->SetPlayerDataNULL(m_ppPlayers[player_data_index]->player_num);
+
+	if (m_ppPlayers[player_data_index] != NULL)
+		m_ppPlayers[player_data_index] = NULL;
+	else
+	{
+		std::cout << "PM의 플레이어 데이터 리셋 중 오류 발생" << std::endl;
+		exit(0);
+	}
+};

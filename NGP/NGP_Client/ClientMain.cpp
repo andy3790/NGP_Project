@@ -25,6 +25,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 static GameObject* PL = (GameObject*) new Player; // �÷��̾� ����ü
 CRITICAL_SECTION cs;
 
+KeyBoardManager key_board_manager;
 
 DWORD WINAPI ProcessClient(LPVOID arg)
 {
@@ -146,8 +147,6 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
 	
 		static GameObject* PL = (GameObject*) new Player; // �÷��̾� ����ü
 	
-		KeyBoardManager key_board_manager;
-
 		bool flag;
 		int key_index;
 		int retval;
@@ -166,6 +165,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
 			((Player*)PL)->MakePlayer(6, P_RIGHT);
 	
 			((Player*)PL)->DashTimer = ((Player*)PL)->GetDashCT();
+			key_board_manager.reset();
 
 			ReleaseDC(hWnd, hDC);
 			break;

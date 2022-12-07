@@ -63,3 +63,15 @@ bool Game::DataSender(int player_num)
 
     return false;
 }
+
+bool Game::SetPlayerDataNULL(int player_num)
+{
+    if (m_ppPlayers[player_num] != NULL)
+        m_ppPlayers[player_num] = NULL;
+    else
+    {
+        std::cout << "Game의 플레이어 데이터 리셋 중 오류 발생" << std::endl;
+        exit(0);
+    }
+    return 0;
+}

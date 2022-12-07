@@ -32,16 +32,8 @@ public:
 	}
 	// Geter, Seter
 	PlayerData* GstPlayerData(int player_data_index) { return m_ppPlayers[player_data_index]; };
-	void SetPlayerDataNULL(int player_data_index) {
-		if (m_ppPlayers[player_data_index] != NULL)
-			m_ppPlayers[player_data_index] = NULL;
-		else
-		{
-			std::cout << "PM의 플레이어 데이터 리셋 중 오류 발생" << std::endl;
-			exit(0);
-		}
-	};
 
+	void SetPlayerDataNULL(int player_data_index);
 
 
 	int GetEmptyGame();
