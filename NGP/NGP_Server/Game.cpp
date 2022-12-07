@@ -34,6 +34,24 @@ int Game::AddObject(GameObject* new_object)
     return index;
 }
 
+void Game::ShowInformation()
+{
+    for (int i = 0;i < MAX_PLAYER_NUM;i++)
+    {
+        if (m_ppPlayers[i] == NULL)
+        {
+            std::cout << i << " 번 플레이어----------------" << std::endl;
+            std::cout << "NULL" << std::endl;
+        }
+        else
+        {
+            std::cout << i << " 번 플레이어----------------" << std::endl;
+            std::cout << "NOT ? NULL" << std::endl;
+        }
+    }
+    std::cout << "-----------------------------" << std::endl;
+}
+
 bool Game::DataSender(int player_num)
 {
     //bool flag;

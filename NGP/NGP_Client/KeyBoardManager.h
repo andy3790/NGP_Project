@@ -21,5 +21,6 @@ private:
 
 public:
 	void reset();
-	void SetKey(int key_index, bool in);
+	bool SetKey(int key_index, bool in);
+	void SelectKey(unsigned int wParam, int& key_index);	// unsigned int -> WPARAM
 };

@@ -84,7 +84,6 @@ int PlayerManager::MakePlayer(int game_index, SOCKET client_sock)
 	else
 	{
 		// 아래 코드를 플레이어 생성하는 코드로 만든다.
-		// 플레이어 생성 시 플레이어 keyRecv 스레드 생성해야함
 		Player* player = new Player;
 		player->MakePlayer(6, P_RIGHT); // 개선할 필요가 있다.
 		GameObject* GOplayer = (GameObject*)player;
@@ -136,4 +135,17 @@ int PlayerManager::SetPlayerData(int game_index, int player_num, int player_inde
 
 
 	return player_data_index;
+}
+
+void PlayerManager::ShowInformation()
+{
+	for (int i = 0;i < MAX_GAME_NUM;i++)
+	{
+		if (m_ppGame[i] != NULL)
+		{
+			std::cout << i << " 번 게임====================" << std::endl;
+			m_ppGame[i]->ShowInformation();
+			std::cout << "=============================" << std::endl;
+		}
+	}
 }

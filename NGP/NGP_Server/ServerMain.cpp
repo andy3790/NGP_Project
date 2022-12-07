@@ -6,6 +6,58 @@
 
 PlayerManager PM;
 
+DWORD WINAPI KeyRecv(LPVOID arg)
+{
+	int player_data_index = (int)arg;
+	PlayerData* PD = PM.GstPlayerData(player_data_index);
+
+	int retval;
+	SOCKET client_sock = PD->sock;
+	struct sockaddr_in clientaddr;
+	char addr[INET_ADDRSTRLEN];
+	int addrlen;
+	// 데이터 받기용 변수
+	int key_index;
+	bool flag;
+	// 출력용 변수
+	char* word;
+	char* is_down;
+
+	// 클라이언트 정보 얻기
+	addrlen = sizeof(clientaddr);
+	getpeername(client_sock, (struct sockaddr*)&clientaddr, &addrlen);
+	inet_ntop(AF_INET, &clientaddr.sin_addr, addr, sizeof(addr));
+
+	while (1) {
+		// 데이터 받기
+		retval = recv(client_sock, (char*) & key_index, sizeof(int), 0);
+		if (retval == SOCKET_ERROR) {
+			err_display("recv()");
+			break;
+		}
+		else if (retval == 0)
+			break;
+		retval = recv(client_sock, (char*)&flag, sizeof(bool), 0);
+		if (retval == SOCKET_ERROR) {
+			err_display("recv()");
+			break;
+		}
+		else if (retval == 0)
+			break;
+
+		// 받은 데이터 출력
+		std::cout << player_data_index << "번 플레이어" << key_index << " 키를 " << flag << std::endl;
+	}
+
+	// 소켓 닫기
+	closesocket(client_sock);
+	printf("[TCP 서버] 클라이언트 종료: IP 주소=%s, 포트 번호=%d\n",
+		addr, ntohs(clientaddr.sin_port));
+	PM.SetPlayerDataNULL(player_data_index);
+	return 0;
+}
+
+
 int main() 
 {
 	
@@ -37,7 +89,8 @@ int main()
 	SOCKET client_sock;
 	struct sockaddr_in clientaddr;
 	int addrlen;
-	
+	HANDLE hThread;
+
 
 	while (1) {
 		// accept()
@@ -55,6 +108,7 @@ int main()
 			// 치명적 오류 발생?
 		}
 
+		// 플레이어 생성 시 플레이어 keyRecv 스레드 생성해야함
 		int player_data_index = PM.MakePlayer(game_id, client_sock);
 		if (player_data_index < 0)
 		{
@@ -67,6 +121,13 @@ int main()
 			break; // or exit(0);
 			// 오류 발생.?
 		}
+		// 스레드 생성
+		hThread = CreateThread(NULL, 0, KeyRecv,
+			(LPVOID)player_data_index, 0, NULL);
+		if (hThread == NULL) { closesocket(client_sock); }
+		else { CloseHandle(hThread); }
+
+		PM.ShowInformation();
 		PM.SendPlayerNum(player_data_index, client_sock);
 	}
 
