@@ -1,5 +1,6 @@
 #pragma once
 #include"Creature.h"
+#include "KeyBoardManager.h"
 
 #define P_LEFT 1
 #define P_RIGHT 2
@@ -87,6 +88,9 @@ public:
 	void Decode(ObjectData object_data);
 
 #elif CONSOL==SERVER
+private:
+	KeyBoardManager KBM;
+
 public:
 	void Update(float eTime);
 	ObjectData Encode();

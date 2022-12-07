@@ -20,7 +20,18 @@ private:
 
 
 public:
+	KeyBoardManager() {
+		reset();
+	}
+
 	void reset();
 	bool SetKey(int key_index, bool in);
+
+#if CONSOL==CLIENT
 	void SelectKey(unsigned int wParam, int& key_index);	// unsigned int -> WPARAM
+#elif CONSOL==SERVER
+
+
+#endif
+
 };
