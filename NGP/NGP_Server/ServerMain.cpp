@@ -9,7 +9,7 @@ PlayerManager PM;
 DWORD WINAPI KeyRecv(LPVOID arg)
 {
 	int player_data_index = (int)arg;
-	PlayerData* PD = PM.GstPlayerData(player_data_index);
+	PlayerData* PD = PM.GetPlayerData(player_data_index);
 
 	int retval;
 	SOCKET client_sock = PD->sock;
@@ -47,6 +47,8 @@ DWORD WINAPI KeyRecv(LPVOID arg)
 
 		// 받은 데이터 출력
 		std::cout << player_data_index << "번 플레이어" << key_index << " 키를 " << flag << std::endl;
+		
+		PM.GetGame(PD->gamenum)->GetGOMgr()->GetGameObject(PD->playerIndex);
 	}
 
 	// 소켓 닫기
