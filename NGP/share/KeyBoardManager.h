@@ -15,8 +15,8 @@ public:
 	};
 
 private:
-	int num_of_key = 10;	// 수동으로 바꿔줄것
-	bool key_array[10];
+	#define num_of_key 10	// 수동으로 바꿔줄것
+	bool key_array[num_of_key];
 
 
 public:

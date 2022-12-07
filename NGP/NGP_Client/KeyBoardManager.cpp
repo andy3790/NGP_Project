@@ -3,7 +3,7 @@
 
 void KeyBoardManager::reset()
 {
-	for (int i = 0;i < 9;i++)
+	for (int i = 0;i < num_of_key;i++)
 	{
 		key_array[i] = false;
 	}

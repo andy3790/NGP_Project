@@ -31,7 +31,8 @@ public:
 		// 얘는 동적할당이 아니야 아직?
 	}
 	// Geter, Seter
-	PlayerData* GstPlayerData(int player_data_index) { return m_ppPlayers[player_data_index]; };
+	Game* GetGame(int game_index) { return m_ppGame[game_index]; }
+	PlayerData* GetPlayerData(int player_data_index) { return m_ppPlayers[player_data_index]; };
 
 	void SetPlayerDataNULL(int player_data_index);
 

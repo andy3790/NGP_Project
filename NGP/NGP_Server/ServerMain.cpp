@@ -1,8 +1,9 @@
 
-#include"Consol.h"
-#include"utill.h"
+#include "Consol.h"
+#include "utill.h"
 
-#include"PlayerManager.h"
+#include "PlayerManager.h"
+#include "Player.h"
 
 PlayerManager PM;
 
@@ -45,10 +46,11 @@ DWORD WINAPI KeyRecv(LPVOID arg)
 		else if (retval == 0)
 			break;
 
-		// 받은 데이터 출력
-		std::cout << player_data_index << "번 플레이어" << key_index << " 키를 " << flag << std::endl;
+		((Player*)PM.GetGame(PD->gamenum)->GetGOMgr()->GetGameObject(PD->playerIndex))->GetKBM()->SetKey(key_index, flag);
 		
-		PM.GetGame(PD->gamenum)->GetGOMgr()->GetGameObject(PD->playerIndex);
+		// 받은 데이터 출력
+		KeyBoardManager* K = ((Player*)PM.GetGame(PD->gamenum)->GetGOMgr()->GetGameObject(PD->playerIndex))->GetKBM();
+		std::cout << player_data_index << "번 플레이어" << key_index << " 키를 " << flag << std::endl;
 	}
 
 	// 소켓 닫기

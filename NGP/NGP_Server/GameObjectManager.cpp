@@ -47,3 +47,4 @@ ObjectData* GameObjectManager::Encode()	// 오브젝트 데이터 배열을 반환.
 
 	return Object_data;
 } 
+

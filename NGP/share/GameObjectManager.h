@@ -19,10 +19,10 @@ public:
 	}
 
 	int AddObject(GameObject* new_object, int index);
-	GameObject GetObject(int index);
 	bool DeleteObject(int index);
 	void InitGameObjects();
 
+	GameObject* GetGameObject(int index) { return m_GameObjects[index]; }
 
 #if CONSOL==CLIENT
 private:

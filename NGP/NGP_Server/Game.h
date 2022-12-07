@@ -36,5 +36,7 @@ public:
 	void Update(float eTime);
 	bool DataSender(int player_num);
 	bool SetPlayerDataNULL(int player_num);
+
+	GameObjectManager* GetGOMgr() { return GOMgr; }
 };
 
