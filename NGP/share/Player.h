@@ -11,6 +11,7 @@
 #define P_USE_SKILL_2 1 // Skill 2
 #define P_USE_SKILL_3 2 // Ult
 
+
 class SKILL {
 public:
 	HBITMAP hBitmap;
@@ -89,11 +90,14 @@ public:
 
 #elif CONSOL==SERVER
 private:
-	KeyBoardManager KBM;
+	KeyBoardManager *KBM;
 
 public:
 	void Update(float eTime);
 	ObjectData Encode();
+
+	KeyBoardManager* GetKBM() { return KBM; };
+
 #endif
 
 	int DashTimer;
@@ -258,4 +262,5 @@ public:
 
 	HBITMAP GethBitmap_move() { return hBitmap_move; }
 	HBITMAP GethBitmap_attack() { return hBitmap_attack; }
+
 };

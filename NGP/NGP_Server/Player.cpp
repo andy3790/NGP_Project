@@ -101,6 +101,9 @@ void Player::MakePlayer(int actNum, int dir) {
 	// actNum = 플레이어가 할 수 있는 행동의 갯수
 	// dir = 플레이어가 생성될 때 바라보고 있는 방향
 
+	KBM = new KeyBoardManager;
+	KBM->reset();
+
 	hBitmap_move = (HBITMAP)LoadImage(NULL, TEXT("./Resorce/Image/Player/Player_move.bmp"), IMAGE_BITMAP, 0, 0, LR_LOADFROMFILE);
 	hBitmap_attack = (HBITMAP)LoadImage(NULL, TEXT("./Resorce/Image/Player/Player_attack.bmp"), IMAGE_BITMAP, 0, 0, LR_LOADFROMFILE);
 	animation = (POINT**)malloc(sizeof(POINT*) * actNum);
