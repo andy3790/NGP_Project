@@ -4,8 +4,39 @@
 
 #include "PlayerManager.h"
 #include "Player.h"
+#include"Game.h"
 
 PlayerManager PM;
+
+DWORD WINAPI GameMain(LPVOID arg)
+{
+	int game_id = (int)arg;
+	Game* game = PM.GetGame(game_id);
+
+	// 게임 생성시점에는 플레이어가 들어와있지 않다.
+	// 따라서 플레이어 접속을 기다린다음 업데이트 루프로 들어간다.
+	game->SetPprevTime(clock());
+	while (1)
+	{
+		float eTime = clock() - game->GetPrevTime();
+		game->SetPprevTime(clock());
+		eTime = eTime / 1000.f;
+		game->Update(eTime);
+		//std::cout << eTime << std::endl;
+
+		// 플레이어들에게 데이터를 보낸다.
+		game->DataSender(0);
+		game->DataSender(1);
+		//if (eTime < 36)
+		//{
+		//	Sleep(36 - eTime);
+		//}
+	}
+	// 모든 플레이어의 연결이 끊어진 상태일 경우 루프를 빠져나온다.
+	std::cout << "게임 스레드 종료" << std::endl;
+
+	return 0;
+}
 
 DWORD WINAPI KeyRecv(LPVOID arg)
 {
@@ -111,6 +142,20 @@ int main()
 		{
 			break;
 			// 치명적 오류 발생?
+		}
+
+		if (PM.IsGameNULL(game_id))
+		{
+			game_id = PM.MakeGame(game_id);
+			// 스레드 생성
+			hThread = CreateThread(NULL, 0, GameMain,
+				(LPVOID)game_id, 0, NULL);
+			if (hThread == NULL)
+			{
+				std::cout << "게임 스레드 생성 실패" << std::endl;
+				exit(0);
+			}
+			else { CloseHandle(hThread); }
 		}
 
 		// 플레이어 생성 시 플레이어 keyRecv 스레드 생성해야함

@@ -54,10 +54,15 @@ void Game::ShowInformation()
 
 bool Game::DataSender(int player_num)
 {
+    if (IsPlayerDataNULL(player_num))
+        return false;
+
     //bool flag;
     ObjectData* object_data = GOMgr->Encode();
-
-    SOCKET sock = m_ppPlayers[player_num]->sock;
+    SOCKET sock;
+    // 임계영역 필요할지도?
+    if (!IsPlayerDataNULL(player_num))
+        sock = m_ppPlayers[player_num]->sock;
     //배열의 데이터를 보낸다.
     // 성공 실패 여부에 따라 리턴값 변경?
 
@@ -67,11 +72,19 @@ bool Game::DataSender(int player_num)
 bool Game::SetPlayerDataNULL(int player_num)
 {
     if (m_ppPlayers[player_num] != NULL)
+    {
+        delete m_ppPlayers[player_num];
         m_ppPlayers[player_num] = NULL;
+    }
     else
     {
         std::cout << "Game의 플레이어 데이터 리셋 중 오류 발생" << std::endl;
         exit(0);
     }
     return 0;
+}
+
+void Game::Update(float eTime)
+{
+
 }

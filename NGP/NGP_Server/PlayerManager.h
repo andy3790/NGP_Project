@@ -45,6 +45,6 @@ public:
 	void SendPlayerNum(int player_index, SOCKET client_sock);
 	int SetPlayerData(int game_index, int player_num, int player_index, SOCKET client_sock);
 	void ShowInformation();
-
+	bool IsGameNULL(int game_id);
 };
 

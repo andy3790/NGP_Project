@@ -12,6 +12,8 @@ private:
 	GameObjectManager* GOMgr;
 	PlayerData* m_ppPlayers[2];
 
+	float m_fprevTime;
+
 public:
 	Game() {
 		GOMgr = new GameObjectManager;
@@ -35,7 +37,11 @@ public:
 	
 	void Update(float eTime);
 	bool DataSender(int player_num);
+
+	void SetPprevTime(float in) { m_fprevTime = in; };
+	float GetPrevTime() { return m_fprevTime; };
 	bool SetPlayerDataNULL(int player_num);
+	bool IsPlayerDataNULL(int in) { return m_ppPlayers[in] == NULL; }
 
 	GameObjectManager* GetGOMgr() { return GOMgr; }
 };

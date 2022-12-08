@@ -52,10 +52,6 @@ int PlayerManager::CheckGame()
 		std::cout << "빈 게임이 없음" << std::endl;
 		exit(1);
 	}
-	if (m_ppGame[game_id] == NULL)
-	{
-		game_id = MakeGame(game_id);
-	}
 
 	return game_id;
 }
@@ -154,10 +150,18 @@ void PlayerManager::SetPlayerDataNULL(int player_data_index) {
 	m_ppGame[m_ppPlayers[player_data_index]->gamenum]->SetPlayerDataNULL(m_ppPlayers[player_data_index]->player_num);
 
 	if (m_ppPlayers[player_data_index] != NULL)
+	{
+		delete m_ppPlayers[player_data_index];
 		m_ppPlayers[player_data_index] = NULL;
+	}
 	else
 	{
 		std::cout << "PM의 플레이어 데이터 리셋 중 오류 발생" << std::endl;
 		exit(0);
 	}
 };
+
+bool PlayerManager::IsGameNULL(int game_id)
+{
+	return m_ppGame[game_id] == NULL;
+}
