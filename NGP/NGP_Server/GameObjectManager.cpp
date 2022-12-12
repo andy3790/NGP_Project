@@ -35,6 +35,25 @@ void GameObjectManager::InitGameObjects()
 	}
 }
 
+
+void GameObjectManager::Update(float eTime)
+{
+	// 모든 오브젝트의 업데이트를 부름
+
+	for (int i = 0; i < MAX_OBJECT_COUNT; i++)
+	{
+		if (m_GameObjects[i] == NULL)
+			continue;
+		m_GameObjects[i]->Update(eTime);
+	}
+}
+
+void GameObjectManager::SetKeyBoardData(int player_num, KeyData keydata)
+{
+	// 해당 플레이어의 키 데이터를 업데이트
+	m_GameObjects[player_num];
+}
+
 ObjectData* GameObjectManager::Encode()	// 오브젝트 데이터 배열을 반환.
 {
 	ObjectData Object_data[MAX_OBJECT_COUNT];
@@ -47,4 +66,3 @@ ObjectData* GameObjectManager::Encode()	// 오브젝트 데이터 배열을 반환.
 
 	return Object_data;
 } 
-

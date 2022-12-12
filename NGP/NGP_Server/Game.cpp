@@ -86,5 +86,5 @@ bool Game::SetPlayerDataNULL(int player_num)
 
 void Game::Update(float eTime)
 {
-
+    GOMgr->Update(eTime);
 }
