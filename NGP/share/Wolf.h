@@ -5,6 +5,9 @@ private:
 	CImage myImage;
 
 public:
+	Wolf() {}
+	Wolf(POINT location, int dir) { MakeEnemy(location, dir); }
+
 	void MakeEnemy(POINT location, int dir);
 	void DelelteEnemy();
 

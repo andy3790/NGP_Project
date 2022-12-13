@@ -18,8 +18,8 @@ public:
 
 #if CONSOL==CLIENT
 public:
-	virtual void Render(HDC hDC, HBITMAP hBitmap, RECT WndRect);
-	virtual void Decode(ObjectData object_data);
+	virtual void Render(HDC hDC, HBITMAP hBitmap, RECT WndRect) = 0;
+	virtual void Decode(ObjectData object_data) = 0;
 
 #elif CONSOL==SERVER
 public:

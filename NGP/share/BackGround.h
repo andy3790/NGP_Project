@@ -3,9 +3,19 @@
 
 class BackGround : MapObject {
 private:
+	HBITMAP hMapBitmap;
+	int bitmapWidth;
+	int bitmapHight;
 
-
+	int MapSizeX;
+	int MapSizeY;
 public:
+	BackGround();
+	BackGround(int MapX, int MapY) {
+		MakeBackGroundObject(MapX, MapY);
+	}
+
+	void MakeBackGroundObject(int MapX, int MapY);
 
 #if CONSOL==CLIENT
 public:
