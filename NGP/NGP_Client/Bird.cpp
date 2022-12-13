@@ -54,14 +54,15 @@ void Bird::DelelteEnemy()
 void Bird::Render(HDC hDC, HBITMAP hBitmap, RECT WndRect)
 {
 	HDC memDC, mem2DC, mem3DC;
-	HBITMAP tempBitmap, tempBitmap2;
+	HBITMAP tempBitmap0, tempBitmap, tempBitmap2;
 	HBITMAP oldBitmap, oldtempBitmap, oldtempBitmap2;
 	HDC mem1DC_Map;
 	HBITMAP oldMapBitmap;
 	HBRUSH hBrush, oldBrush, hRed, hGray;
 
 	memDC = CreateCompatibleDC(hDC);
-	oldBitmap = (HBITMAP)SelectObject(memDC, hBitmap);
+	tempBitmap0 = CreateCompatibleBitmap(hDC, GetAniSizeX(), GetAniSizeY());
+	oldBitmap = (HBITMAP)SelectObject(memDC, tempBitmap0);
 
 	mem2DC = CreateCompatibleDC(memDC);
 	hBrush = CreateSolidBrush(RGB(255, 0, 255));
@@ -88,19 +89,28 @@ void Bird::Render(HDC hDC, HBITMAP hBitmap, RECT WndRect)
 			DeleteObject(tempBitmap2);
 			DeleteDC(mem3DC);
 		}
-		TransparentBlt(memDC, GetLocaition().x, GetLocaition().y, GetPrintSizeX(), GetPrintSizeY(), mem2DC, 0, 0, GetAniSizeX(), GetAniSizeY(), RGB(255, 0, 255));
 
-		SelectObject(memDC, hGray);
-		Rectangle(memDC, GetLocaition().x + 10, GetLocaition().y - 30, GetLocaition().x + GetPrintSizeX() - 10, GetLocaition().y - 10);
-		SelectObject(memDC, hRed);
-		Rectangle(memDC, GetLocaition().x + 10, GetLocaition().y - 30, GetLocaition().x + 10 + ((GetPrintSizeX() - 20) * ((float)GetHp() / (float)GetMaxHp())), GetLocaition().y - 10);
-		SelectObject(memDC, GetStockObject(WHITE_BRUSH));
+		BitBlt(memDC, 0, 0, GetAniSizeX(), GetAniSizeY(), mem2DC, 0, 0, SRCCOPY);
+		TransparentBlt(hDC, GetLocaition().x, GetLocaition().y, GetPrintSizeX(), GetPrintSizeY(), memDC, 0, 0, GetAniSizeX(), GetAniSizeY(), RGB(255, 0, 255));
+
+		SelectObject(hDC, hGray);
+		Rectangle(hDC, GetLocaition().x + 10, GetLocaition().y - 30, GetLocaition().x + GetPrintSizeX() - 10, GetLocaition().y - 10);
+		SelectObject(hDC, hRed);
+		Rectangle(hDC, GetLocaition().x + 10, GetLocaition().y - 30, GetLocaition().x + 10 + ((GetPrintSizeX() - 20) * ((float)GetHp() / (float)GetMaxHp())), GetLocaition().y - 10);
+		SelectObject(hDC, GetStockObject(WHITE_BRUSH));
 		SelectObject(mem2DC, oldtempBitmap);
 		DeleteObject(tempBitmap);
 	}
 
 	DeleteObject(hRed);
 	DeleteObject(hGray);
+
+	SelectObject(mem2DC, oldBrush);
+	DeleteObject(hBrush);
+	DeleteDC(mem2DC);
+
+	SelectObject(memDC, oldBitmap);
+	DeleteDC(memDC);
 }
 
 void Bird::Decode(ObjectData object_data)

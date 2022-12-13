@@ -12,6 +12,8 @@
 #include "Wolf.h";
 #include "Plant.h";
 #include "Bird.h";
+#include "BackGround.h"
+#include "Brick.h"
 
 #ifdef _DEBUG
 #pragma comment(linker, "/entry:WinMainCRTStartup /subsystem:console")
@@ -165,6 +167,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevinstance, LPSTR lpszCmdPa
 LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
 		PAINTSTRUCT ps;
 		HDC hDC;
+		static HBITMAP hBitmap;
 		static RECT WndRect; // ������ â RECT
 
 		bool Pause = false;
@@ -185,7 +188,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
 	
 			hDC = GetDC(hWnd);
 			GetClientRect(hWnd, &WndRect);
-	
+			hBitmap = CreateCompatibleBitmap(hDC, WndRect.right * 2, WndRect.bottom);
+
 			((Player*)PL)->MakePlayer(6, P_RIGHT);
 	
 			((Player*)PL)->DashTimer = ((Player*)PL)->GetDashCT();
@@ -193,19 +197,37 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
 
 			{
 				int ti = 0;
+				// BackGround
+				MapObject* newMapObject = (MapObject*) new BackGround(WndRect.right * 2, WndRect.bottom);
+				GOMgr.AddObject((GameObject*)newMapObject, ti++);
+
+				// Brick
+				newMapObject = (MapObject*) new Brick(RECT{ 0,900,3900,1080 }, Brick::Ground);
+				GOMgr.AddObject((GameObject*)newMapObject, ti++);
+				newMapObject = (MapObject*) new Brick(RECT{ 1760,600,2360,900 }, Brick::Wall);
+				GOMgr.AddObject((GameObject*)newMapObject, ti++);
+				newMapObject = (MapObject*) new Brick(RECT{ 2360,700,2600,900 }, Brick::Wall);
+				GOMgr.AddObject((GameObject*)newMapObject, ti++);
+				newMapObject = (MapObject*) new Brick(RECT{ 2600,800,3300,900 }, Brick::Wall);
+				GOMgr.AddObject((GameObject*)newMapObject, ti++);
+				newMapObject = (MapObject*) new Brick(RECT{ 400,750,860,900 }, Brick::Wall);
+				GOMgr.AddObject((GameObject*)newMapObject, ti++);
+				newMapObject = (MapObject*) new Brick(RECT{ 1020,680,1540,700 }, Brick::Shelf);
+				GOMgr.AddObject((GameObject*)newMapObject, ti++);
+				newMapObject = (MapObject*) new Brick(RECT{ 660,470,1540,490 }, Brick::Shelf);
+				GOMgr.AddObject((GameObject*)newMapObject, ti++);
+
+				// Player
 				GOMgr.AddObject((GameObject*)PL, ti++);
 
-				Enemy* newEnemyObject = (Enemy*) new Base();
-				newEnemyObject->MakeEnemy(POINT{ 300, 400 }, Enemy::direction::E_LEFT);
+				// Enemy
+				Enemy* newEnemyObject = (Enemy*) new Base(POINT{ 300, 400 }, Enemy::direction::E_LEFT);
 				GOMgr.AddObject((GameObject*)newEnemyObject, ti++);
-				newEnemyObject = (Enemy*) new Bird();
-				newEnemyObject->MakeEnemy(POINT{ 300, 500 }, Enemy::direction::E_LEFT);
+				newEnemyObject = (Enemy*) new Bird(POINT{ 300, 500 }, Enemy::direction::E_LEFT);
 				GOMgr.AddObject((GameObject*)newEnemyObject, ti++);
-				newEnemyObject = (Enemy*) new Wolf();
-				newEnemyObject->MakeEnemy(POINT{ 300, 600 }, Enemy::direction::E_LEFT);
+				newEnemyObject = (Enemy*) new Wolf(POINT{ 300, 600 }, Enemy::direction::E_LEFT);
 				GOMgr.AddObject((GameObject*)newEnemyObject, ti++);
-				newEnemyObject = (Enemy*) new Plant();
-				newEnemyObject->MakeEnemy(POINT{ 300, 700 }, Enemy::direction::E_LEFT);
+				newEnemyObject = (Enemy*) new Plant(POINT{ 300, 700 }, Enemy::direction::E_LEFT);
 				GOMgr.AddObject((GameObject*)newEnemyObject, ti++);
 
 			}
@@ -215,8 +237,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
 			break;
 		case WM_PAINT:
 			hDC = BeginPaint(hWnd, &ps);
-			HBITMAP hBitmap;
-			hBitmap = CreateCompatibleBitmap(hDC, WndRect.right * 2, WndRect.bottom);
+
 			EnterCriticalSection(&cs);
 			//((Player*)PL)->Render(hDC, hBitmap, WndRect);
 			LeaveCriticalSection(&cs);
@@ -224,6 +245,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
 			GOMgr.Render(hDC, hBitmap, WndRect);
 
 			EndPaint(hWnd, &ps);
+
 			break;
 		case WM_LBUTTONDOWN:
 			if (!Pause && !((Player*)PL)->UsingSkill) {

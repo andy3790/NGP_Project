@@ -6,6 +6,9 @@ private:
 	CImage myImage;
 
 public:
+	Plant() {}
+	Plant(POINT location, int dir) { MakeEnemy(location, dir); }
+
 	void MakeEnemy(POINT location, int dir);
 	void DelelteEnemy();
 

@@ -1,10 +1,25 @@
 #pragma once
 #include"MapObject.h"
 class Brick : MapObject{
-private:
+public:
+	enum Type : int {
+		Ground,
+		Wall,
+		Shelf
+	};
 
+private:
+	CImage image;
+	RECT rect;
+	Type type;
 
 public:
+	Brick();
+	Brick(RECT input, Type type) {
+		MakeBrickObject(input, type);
+	}
+
+	void MakeBrickObject(RECT input, Type type);
 
 #if CONSOL==CLIENT
 public:
