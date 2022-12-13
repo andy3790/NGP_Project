@@ -28,5 +28,5 @@ struct PlayerData {
 	int		gamenum;		//-플레이어가 속해있는 게임의 번호
 	int		player_num;		// m_ppPlayers의 인덱스. 0 or 1
 	int		playerIndex;	//-플레이어 캐릭터의 오브젝트 인덱스
-
+	bool	is_ready;		// 게임 스레드에서 데이터를 받을 준비가 되었는가?
 };

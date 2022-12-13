@@ -13,6 +13,12 @@
 #include "Plant.h";
 #include "Bird.h";
 
+#ifdef _DEBUG
+#pragma comment(linker, "/entry:WinMainCRTStartup /subsystem:console")
+#endif
+
+
+
 char* SERVERIP = (char*)"127.0.0.1";
 //char* SERVERIP = (char*)"192.168.20.66";
 
@@ -37,8 +43,10 @@ DWORD WINAPI RecvThread(LPVOID arg)
 {
 	int retval;
 
-	SOCKET sock = (SOCKET)arg;
+	//SOCKET sock = (SOCKET)arg;
 	ObjectData datalist[MAX_OBJECT_COUNT];
+
+	memset(&datalist, 0, sizeof(datalist));
 
 	while (true)
 	{
@@ -51,10 +59,10 @@ DWORD WINAPI RecvThread(LPVOID arg)
 		{
 			if (progress > max_size - BUFSIZE)
 				sendSize = max_size - progress;
-			retval = recv(sock, (char*)&datalist + progress, sendSize, 0);
+			retval = recv(sock, (char*)&datalist + progress, sendSize, MSG_WAITALL);
 			if (retval == SOCKET_ERROR) {
-				//err_display("recv()");
-				//break;
+				err_display("recv()");
+				break;
 			}
 			progress += retval;
 		}
@@ -106,8 +114,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevinstance, LPSTR lpszCmdPa
 
 	// Recv
 	HANDLE hThread;
-	hThread = CreateThread(NULL, 0, RecvThread,
-		&sock, 0, NULL);
+	hThread = CreateThread(NULL, 0, RecvThread, NULL/*&sock*/, 0, NULL);
 	if (hThread == NULL) {}
 	else { CloseHandle(hThread); }
 

@@ -110,8 +110,10 @@ void PlayerManager::SendPlayerNum(int player_data_index, SOCKET client_sock)
 		exit(0);
 	}
 
+	m_ppPlayers[player_data_index]->is_ready = true;
+	m_ppGame[game_index]->SetPlayerData(player_num, true);
 	// 데이터를 보내주는 함수. 아직 정의 없음.
-	m_ppGame[game_index]->DataSender(player_num);
+	//m_ppGame[game_index]->DataSender(player_num);
 }
 
 int PlayerManager::SetPlayerData(int game_index, int player_num, int player_index, SOCKET client_sock)
@@ -128,6 +130,7 @@ int PlayerManager::SetPlayerData(int game_index, int player_num, int player_inde
 	m_ppPlayers[player_data_index]->player_num = player_num;
 	m_ppPlayers[player_data_index]->playerIndex = player_index;
 	m_ppPlayers[player_data_index]->sock = client_sock;
+	m_ppPlayers[player_data_index]->is_ready = false;
 
 
 	return player_data_index;
@@ -140,7 +143,7 @@ void PlayerManager::ShowInformation()
 		if (m_ppGame[i] != NULL)
 		{
 			std::cout << i << " 번 게임====================" << std::endl;
-			m_ppGame[i]->ShowInformation();
+			if (m_ppGame[i] != NULL) m_ppGame[i]->ShowInformation();
 			std::cout << "=============================" << std::endl;
 		}
 	}
@@ -164,4 +167,13 @@ void PlayerManager::SetPlayerDataNULL(int player_data_index) {
 bool PlayerManager::IsGameNULL(int game_id)
 {
 	return m_ppGame[game_id] == NULL;
+}
+
+bool PlayerManager::SetGameNULL(int game_id)
+{
+	if (IsGameNULL(game_id))
+		return false;
+	delete m_ppGame[game_id];
+	m_ppGame[game_id] = NULL;
+	return true;
 }

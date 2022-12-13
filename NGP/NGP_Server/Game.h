@@ -31,6 +31,7 @@ public:
 	}
 	int CheckPlayer();				// player_num 확인, 반환
 	void SetPlayerData(int game_index, int player_num, int player_index, SOCKET client_sock);
+	void SetPlayerData(int player_num, bool is_ready);
 	int AddObject(GameObject* new_object);	// 생성된 오브젝트 인덱스 반환
 	
 	void ShowInformation();

@@ -56,17 +56,21 @@ void GameObjectManager::SetKeyBoardData(int player_num, KeyData keydata)
 
 ObjectData* GameObjectManager::Encode()	// 오브젝트 데이터 배열을 반환.
 {
+	//ObjectData* Object_data = new ObjectData[MAX_OBJECT_COUNT];
 	ObjectData Object_data[MAX_OBJECT_COUNT];
+
+	//memset(&Object_data, 0, sizeof(ObjectData) * MAX_OBJECT_COUNT);
+
+
 	for (int i = 0;i < MAX_OBJECT_COUNT;i++)
 	{
 		if (m_GameObjects[i] == NULL)
 		{
-			Object_data->state = STATE::NULL_data;
+			Object_data[i].state = STATE::NULL_data;
 			continue;
 		}
 		Object_data[i] = m_GameObjects[i]->Encode();
 		Object_data[i].index = i;
-
 	}
 
 	return Object_data;

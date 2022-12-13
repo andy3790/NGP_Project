@@ -10,6 +10,7 @@ PlayerManager PM;
 
 DWORD WINAPI GameMain(LPVOID arg)
 {
+	std::cout << "게임 스레드 생성" << std::endl;
 	int game_id = (int)arg;
 	Game* game = PM.GetGame(game_id);
 
@@ -37,7 +38,7 @@ DWORD WINAPI GameMain(LPVOID arg)
 
 		// 플레이어들에게 데이터를 보낸다.
 		game->DataSender(0);
-		break;
+		//break;
 		game->DataSender(1);
 		//if (eTime < 36)
 		//{
@@ -48,6 +49,9 @@ DWORD WINAPI GameMain(LPVOID arg)
 			break;
 		}
 	}
+	if(PM.SetGameNULL(game_id))
+		std::cout << "게임 변수 삭제" << std::endl;
+
 	// 모든 플레이어의 연결이 끊어진 상태일 경우 루프를 빠져나온다.
 	std::cout << "게임 스레드 종료" << std::endl;
 
@@ -106,7 +110,7 @@ DWORD WINAPI KeyRecv(LPVOID arg)
 		addr, ntohs(clientaddr.sin_port));
 	// 플레이어 접속 종료 코드
 	PM.SetPlayerDataNULL(player_data_index);
-	PM.ShowInformation();
+	PM.ShowInformation();	// 게임 스레드에서 게임을 지워버리면 오류 발생
 	return 0;
 }
 

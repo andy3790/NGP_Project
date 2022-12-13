@@ -21,7 +21,14 @@ void Game::SetPlayerData(int game_index, int player_num, int player_index, SOCKE
     m_ppPlayers[player_num]->player_num = player_num;
     m_ppPlayers[player_num]->playerIndex = player_index;
     m_ppPlayers[player_num]->sock = client_sock;
+    m_ppPlayers[player_num]->is_ready = false;
 }
+
+void Game::SetPlayerData(int player_num, bool is_ready)
+{
+    m_ppPlayers[player_num]->is_ready = is_ready;
+}
+
 
 int Game::AddObject(GameObject* new_object)
 {
@@ -56,10 +63,26 @@ bool Game::DataSender(int player_num)
 {
     if (IsPlayerDataNULL(player_num))
         return false;
-    std::cout << player_num << "번p 전송" << std::endl;
+    else
+    {
+        if (m_ppPlayers[player_num]->is_ready == false)
+            return false;
+    }
+    //std::cout << player_num << "번p 전송" << std::endl;
 
     //bool flag;
-    ObjectData* object_data = GOMgr->Encode();
+    //ObjectData* object_data = GOMgr->Encode();
+    ObjectData object_data[MAX_OBJECT_COUNT];
+    for (int i = 0;i < MAX_OBJECT_COUNT;i++)
+    {
+        object_data[i].index = i;
+        if (GOMgr->GetGameObject(i) == NULL)
+        {
+            object_data[i].state = STATE::NULL_data;
+            continue;
+        }
+        object_data[i] = GOMgr->GetGameObject(i)->Encode();
+    }
 
     SOCKET sock;
     // 임계영역 필요할지도?
