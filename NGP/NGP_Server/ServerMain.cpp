@@ -15,6 +15,17 @@ DWORD WINAPI GameMain(LPVOID arg)
 
 	// 게임 생성시점에는 플레이어가 들어와있지 않다.
 	// 따라서 플레이어 접속을 기다린다음 업데이트 루프로 들어간다.
+	while (true)
+	{
+		if (game->IsPlayerDataNULL(0) && game->IsPlayerDataNULL(1))
+		{
+			Sleep(1000);
+		}
+		else
+		{
+			break;
+		}
+	}
 	game->SetPprevTime(clock());
 	while (1)
 	{
@@ -26,11 +37,16 @@ DWORD WINAPI GameMain(LPVOID arg)
 
 		// 플레이어들에게 데이터를 보낸다.
 		game->DataSender(0);
+		break;
 		game->DataSender(1);
 		//if (eTime < 36)
 		//{
 		//	Sleep(36 - eTime);
 		//}
+		if (game->IsPlayerDataNULL(0) && game->IsPlayerDataNULL(1))
+		{
+			break;
+		}
 	}
 	// 모든 플레이어의 연결이 끊어진 상태일 경우 루프를 빠져나온다.
 	std::cout << "게임 스레드 종료" << std::endl;
@@ -88,6 +104,7 @@ DWORD WINAPI KeyRecv(LPVOID arg)
 	closesocket(client_sock);
 	printf("[TCP 서버] 클라이언트 종료: IP 주소=%s, 포트 번호=%d\n",
 		addr, ntohs(clientaddr.sin_port));
+	// 플레이어 접속 종료 코드
 	PM.SetPlayerDataNULL(player_data_index);
 	PM.ShowInformation();
 	return 0;

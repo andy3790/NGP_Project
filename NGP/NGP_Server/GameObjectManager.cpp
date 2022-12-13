@@ -60,8 +60,13 @@ ObjectData* GameObjectManager::Encode()	// 오브젝트 데이터 배열을 반환.
 	for (int i = 0;i < MAX_OBJECT_COUNT;i++)
 	{
 		if (m_GameObjects[i] == NULL)
+		{
+			Object_data->state = STATE::NULL_data;
 			continue;
+		}
 		Object_data[i] = m_GameObjects[i]->Encode();
+		Object_data[i].index = i;
+
 	}
 
 	return Object_data;

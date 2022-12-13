@@ -36,9 +36,14 @@ void GameObjectManager::SwapDataBuffer(DBufPointer location)
 {
 
 }
-void GameObjectManager::Decode()
+void GameObjectManager::Decode(ObjectData* datalist)
 {
-
+	for (int i = 0; i < MAX_OBJECT_COUNT; i++) {
+		
+		if (m_GameObjects[datalist[i].index] != NULL) {
+			m_GameObjects[datalist[i].index]->Decode(datalist[i]);
+		}
+	}
 }
 
 void GameObjectManager::Render(HDC hDC, HBITMAP hBitmap, RECT WndRect)

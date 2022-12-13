@@ -33,20 +33,36 @@ CRITICAL_SECTION cs;
 
 KeyBoardManager key_board_manager;
 
-DWORD WINAPI ProcessClient(LPVOID arg)
+DWORD WINAPI RecvThread(LPVOID arg)
 {
 	int retval;
 
 	SOCKET sock = (SOCKET)arg;
-	ObjectData data;
+	ObjectData datalist[MAX_OBJECT_COUNT];
 
-	retval = recv(sock, (char*)&data, sizeof(ObjectData), MSG_WAITALL);
-	if (retval == SOCKET_ERROR) {
-		//err_asdf("recv()", 0, threadNum * 4 + 4);
+	while (true)
+	{
+		int retval = 0;
+		int sendSize = BUFSIZE;
+		int progress = 0;
+		int max_size = sizeof(ObjectData) * (MAX_OBJECT_COUNT);
+
+		while (progress != max_size)
+		{
+			if (progress > max_size - BUFSIZE)
+				sendSize = max_size - progress;
+			retval = recv(sock, (char*)&datalist + progress, sendSize, 0);
+			if (retval == SOCKET_ERROR) {
+				//err_display("recv()");
+				//break;
+			}
+			progress += retval;
+		}
+		EnterCriticalSection(&cs);
+		//((Player*)PL)->Decode(data);
+		GOMgr.Decode(datalist);
+		LeaveCriticalSection(&cs);
 	}
-	EnterCriticalSection(&cs);
-	((Player*)PL)->Decode(data);
-	LeaveCriticalSection(&cs);
 
 	return 0;
 }
@@ -82,23 +98,18 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevinstance, LPSTR lpszCmdPa
 		//err_asdf("recv()", 0, threadNum * 4 + 4);
 	}
 
-	// ObjectData
-
 	InitializeCriticalSection(&cs);
-
-	HANDLE hThread;
-	hThread = CreateThread(NULL, 0, ProcessClient,
-		&sock, 0, NULL);
-	if (hThread == NULL) { }
-	else { CloseHandle(hThread); }
-
 
 	// ������ ����
 
 	// Render
 
 	// Recv
-
+	HANDLE hThread;
+	hThread = CreateThread(NULL, 0, RecvThread,
+		&sock, 0, NULL);
+	if (hThread == NULL) {}
+	else { CloseHandle(hThread); }
 
 	// ������ ���� �κ�
 	HWND hWnd;

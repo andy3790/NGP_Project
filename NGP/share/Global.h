@@ -49,6 +49,10 @@
 
 #define OBJECT_TYPE_PLANTPROJECTILE	0x3000
 
+#define BUFSIZE    512
+
+
+
 // 통신용 열거형
 enum class MSG_KEY : char {
 	MSG_KEY_JUMP,
@@ -76,6 +80,10 @@ enum class STATE : short {
 	run,
 	skill_1,
 	skill_2,
-	skill_3
+	skill_3,
+	NULL_data
 };
+
+
+
 

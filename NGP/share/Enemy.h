@@ -114,6 +114,7 @@ public:
 public:
 	virtual void Update(float eTime);
 	virtual ObjectData Encode();
+	STATE IntToState_Enemey(int in, int dir);
 #endif
 
 };

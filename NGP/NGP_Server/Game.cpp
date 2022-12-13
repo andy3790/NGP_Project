@@ -56,14 +56,39 @@ bool Game::DataSender(int player_num)
 {
     if (IsPlayerDataNULL(player_num))
         return false;
+    std::cout << player_num << "번p 전송" << std::endl;
 
     //bool flag;
     ObjectData* object_data = GOMgr->Encode();
+
     SOCKET sock;
     // 임계영역 필요할지도?
     if (!IsPlayerDataNULL(player_num))
         sock = m_ppPlayers[player_num]->sock;
     //배열의 데이터를 보낸다.
+
+    int retval = 0;
+    int sendSize = BUFSIZE;
+    int progress = 0;
+    int max_size = sizeof(ObjectData) * (MAX_OBJECT_COUNT);
+
+    while (progress != max_size)
+    {
+        if (IsPlayerDataNULL(player_num))
+            return false;
+
+        if (progress > max_size -BUFSIZE)
+            sendSize = max_size -progress;
+        retval = send(sock, (char*)&object_data + progress, sendSize, 0);
+        if (retval == SOCKET_ERROR) {
+            std::cout << player_num << "에러" << std::endl;
+            //err_display("recv()");
+            break;
+        }
+        progress += retval;
+    }
+    
+     
     // 성공 실패 여부에 따라 리턴값 변경?
 
     return false;

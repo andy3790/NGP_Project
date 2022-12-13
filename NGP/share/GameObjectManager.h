@@ -39,7 +39,7 @@ private:
 public:
 	void SetObjectData(ObjectData* input_array);
 	void SwapDataBuffer(DBufPointer location);
-	void Decode();
+	void Decode(ObjectData* datalist);
 
 	void Render(HDC hDC, HBITMAP hBitmap, RECT WndRect);
 
