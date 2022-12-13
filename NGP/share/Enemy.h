@@ -110,6 +110,10 @@ public:
 	virtual void Render(HDC hDC, HBITMAP hBitmap, RECT WndRect) = 0;
 	virtual void Decode(ObjectData object_data) = 0;
 
+	int StateToInt_Enemey(STATE in, int dir);
+	void SetAct(STATE Act);
+
+
 #elif CONSOL==SERVER
 public:
 	virtual void Update(float eTime);

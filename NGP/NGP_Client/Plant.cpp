@@ -110,5 +110,7 @@ void Plant::Render(HDC hDC, HBITMAP hBitmap, RECT WndRect)
 
 void Plant::Decode(ObjectData object_data)
 {
-
+	Enemy::SetLocaition((int)object_data.pos.x, (int)object_data.pos.y);
+	Enemy::SetHp((int)object_data.hp);
+	Enemy::SetAct((int)object_data.state);
 }

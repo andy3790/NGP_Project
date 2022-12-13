@@ -52,7 +52,6 @@
 #define BUFSIZE    512
 
 
-
 // 통신용 열거형
 enum class MSG_KEY : char {
 	MSG_KEY_JUMP,

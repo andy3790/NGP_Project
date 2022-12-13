@@ -36,12 +36,55 @@ void GameObjectManager::SwapDataBuffer(DBufPointer location)
 {
 
 }
-void GameObjectManager::Decode(ObjectData* datalist)
+void GameObjectManager::Decode(ObjectData* datalist, int player_index)
 {
 	for (int i = 0; i < MAX_OBJECT_COUNT; i++) {
 		
 		if (m_GameObjects[datalist[i].index] != NULL) {
 			m_GameObjects[datalist[i].index]->Decode(datalist[i]);
+		}
+		else
+		{
+			if (datalist[i].state == STATE::NULL_data)
+				continue;
+			else
+			{
+				//생성
+				if (datalist[i].index == player_index)
+				{
+					// 플레이어임
+					m_GameObjects[datalist[i].index] = (GameObject*) new Player();
+				}
+				else
+				{
+					// 그 외
+					switch (datalist[i].vel_1)
+					{
+					case OBJECT_TYPE_BASE:
+						m_GameObjects[datalist[i].index] = (GameObject*) new Base();
+						break;
+					case OBJECT_TYPE_BIRD:
+						m_GameObjects[datalist[i].index] = (GameObject*) new Bird();
+						break;
+					case OBJECT_TYPE_WOLF:
+						m_GameObjects[datalist[i].index] = (GameObject*) new Wolf();
+						break;
+					case OBJECT_TYPE_PLANT:
+						m_GameObjects[datalist[i].index] = (GameObject*) new Plant();
+						break;
+					case OBJECT_TYPE_BRICK:
+						m_GameObjects[datalist[i].index] = (GameObject*) new Brick();
+						break;
+					case OBJECT_TYPE_BACKGROUND:
+						m_GameObjects[datalist[i].index] = (GameObject*) new BackGround();
+						break;
+					case OBJECT_TYPE_PLANTPROJECTILE:
+						m_GameObjects[datalist[i].index] = (GameObject*) new Projectile();
+						break;
+					}
+				}
+				m_GameObjects[datalist[i].index]->Decode(datalist[i]);
+			}
 		}
 	}
 }

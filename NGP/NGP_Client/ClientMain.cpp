@@ -37,6 +37,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 
 static GameObject* PL = (GameObject*) new Player; // �÷��̾� ����ü
 GameObjectManager GOMgr;
+//PlayerData player_data;
+int player_index;
 CRITICAL_SECTION cs;
 
 KeyBoardManager key_board_manager;
@@ -70,7 +72,7 @@ DWORD WINAPI RecvThread(LPVOID arg)
 		}
 		EnterCriticalSection(&cs);
 		//((Player*)PL)->Decode(data);
-		GOMgr.Decode(datalist);
+		GOMgr.Decode(datalist, player_index);
 		LeaveCriticalSection(&cs);
 	}
 
@@ -100,10 +102,9 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevinstance, LPSTR lpszCmdPa
 	retval = connect(sock, (struct sockaddr*)&serveraddr, sizeof(serveraddr));
 	if (retval == SOCKET_ERROR) err_quit("connect()");
 
-	PlayerData player_data;
 
 	// ������ �ޱ�(playerIndex)								
-	retval = recv(sock, (char*)&player_data.playerIndex, sizeof(int), MSG_WAITALL);
+	retval = recv(sock, (char*)&player_index, sizeof(int), MSG_WAITALL);
 	if (retval == SOCKET_ERROR) {
 		//err_asdf("recv()", 0, threadNum * 4 + 4);
 	}

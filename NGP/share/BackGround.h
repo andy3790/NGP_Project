@@ -10,7 +10,7 @@ private:
 	int MapSizeX;
 	int MapSizeY;
 public:
-	BackGround();
+	BackGround() {};
 	BackGround(int MapX, int MapY) {
 		MakeBackGroundObject(MapX, MapY);
 	}

@@ -14,7 +14,7 @@ private:
 	Type type;
 
 public:
-	Brick();
+	Brick() {};
 	Brick(RECT input, Type type) {
 		MakeBrickObject(input, type);
 	}
