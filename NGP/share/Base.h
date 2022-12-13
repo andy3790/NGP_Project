@@ -3,9 +3,11 @@
 
 class Base : Enemy{
 private:
-
+	CImage myImage;
 
 public:
+	void MakeEnemy(POINT location, int dir);
+	void DelelteEnemy();
 
 #if CONSOL==CLIENT
 public:

@@ -41,7 +41,7 @@ public:
 	void SwapDataBuffer(DBufPointer location);
 	void Decode();
 
-	void Render();
+	void Render(HDC hDC, HBITMAP hBitmap, RECT WndRect);
 
 #elif CONSOL==SERVER
 private:

@@ -8,6 +8,11 @@
 #include "Player.h"
 #include "KeyBoardManager.h"
 
+#include "Base.h";
+#include "Wolf.h";
+#include "Plant.h";
+#include "Bird.h";
+
 char* SERVERIP = (char*)"127.0.0.1";
 //char* SERVERIP = (char*)"192.168.20.66";
 
@@ -23,6 +28,7 @@ LPCTSTR lpszWindowName = L"Window Api Final Project";
 LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam);
 
 static GameObject* PL = (GameObject*) new Player; // �÷��̾� ����ü
+GameObjectManager GOMgr;
 CRITICAL_SECTION cs;
 
 KeyBoardManager key_board_manager;
@@ -167,6 +173,26 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
 			((Player*)PL)->DashTimer = ((Player*)PL)->GetDashCT();
 			key_board_manager.reset();
 
+			{
+				int ti = 0;
+				GOMgr.AddObject((GameObject*)PL, ti++);
+
+				Enemy* newEnemyObject = (Enemy*) new Base();
+				newEnemyObject->MakeEnemy(POINT{ 300, 400 }, Enemy::direction::E_LEFT);
+				GOMgr.AddObject((GameObject*)newEnemyObject, ti++);
+				newEnemyObject = (Enemy*) new Bird();
+				newEnemyObject->MakeEnemy(POINT{ 300, 500 }, Enemy::direction::E_LEFT);
+				GOMgr.AddObject((GameObject*)newEnemyObject, ti++);
+				newEnemyObject = (Enemy*) new Wolf();
+				newEnemyObject->MakeEnemy(POINT{ 300, 600 }, Enemy::direction::E_LEFT);
+				GOMgr.AddObject((GameObject*)newEnemyObject, ti++);
+				newEnemyObject = (Enemy*) new Plant();
+				newEnemyObject->MakeEnemy(POINT{ 300, 700 }, Enemy::direction::E_LEFT);
+				GOMgr.AddObject((GameObject*)newEnemyObject, ti++);
+
+			}
+
+
 			ReleaseDC(hWnd, hDC);
 			break;
 		case WM_PAINT:
@@ -174,8 +200,11 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
 			HBITMAP hBitmap;
 			hBitmap = CreateCompatibleBitmap(hDC, WndRect.right * 2, WndRect.bottom);
 			EnterCriticalSection(&cs);
-			((Player*)PL)->Render(hDC, hBitmap, WndRect);
+			//((Player*)PL)->Render(hDC, hBitmap, WndRect);
 			LeaveCriticalSection(&cs);
+
+			GOMgr.Render(hDC, hBitmap, WndRect);
+
 			EndPaint(hWnd, &ps);
 			break;
 		case WM_LBUTTONDOWN:
