@@ -36,16 +36,73 @@ void GameObjectManager::SwapDataBuffer(DBufPointer location)
 {
 
 }
-void GameObjectManager::Decode(ObjectData* datalist)
+void GameObjectManager::Decode(ObjectData* datalist, int player_index)
 {
 	for (int i = 0; i < MAX_OBJECT_COUNT; i++) {
 		if(datalist[i].index == 0)
 			if(m_GameObjects[8] != NULL)
 				m_GameObjects[8]->Decode(datalist[i]);
-		
-		//if (m_GameObjects[datalist[i].index] != NULL) {
-		//	m_GameObjects[datalist[i].index]->Decode(datalist[i]);
-		//}
+		if (m_GameObjects[datalist[i].index] != NULL) {
+			m_GameObjects[datalist[i].index]->Decode(datalist[i]);
+		}
+		else
+		{
+			if (datalist[i].state == STATE::NULL_data)
+				continue;
+			else
+			{
+				//»ý¼º
+				if (datalist[i].index == player_index)
+				{
+					// ÇÃ·¹ÀÌ¾îÀÓ
+					GameObject* PL = (GameObject*) new Player;
+
+					((Player*)PL)->MakePlayer(6, P_RIGHT);
+
+					((Player*)PL)->DashTimer = ((Player*)PL)->GetDashCT();
+
+					m_GameObjects[datalist[i].index] = PL;
+				}
+				else
+				{
+					// ±× ¿Ü
+					switch (datalist[i].vel_1)
+					{
+					case OBJECT_TYPE_BASE:
+						m_GameObjects[datalist[i].index] = (GameObject*) new Base({ 0,0 }, 0);
+						break;
+					case OBJECT_TYPE_BIRD:
+						m_GameObjects[datalist[i].index] = (GameObject*) new Bird({ 0,0 }, 0);
+						break;
+					case OBJECT_TYPE_WOLF:
+						m_GameObjects[datalist[i].index] = (GameObject*) new Wolf({ 0,0 }, 0);
+						break;
+					case OBJECT_TYPE_PLANT:
+						m_GameObjects[datalist[i].index] = (GameObject*) new Plant({ 0,0 }, 0);
+						break;
+					case OBJECT_TYPE_BRICK:
+						m_GameObjects[datalist[i].index] = (GameObject*) new Brick();
+						break;
+					case OBJECT_TYPE_BACKGROUND:
+						m_GameObjects[datalist[i].index] = (GameObject*) new BackGround();
+						break;
+					case OBJECT_TYPE_PLANTPROJECTILE:
+						m_GameObjects[datalist[i].index] = (GameObject*) new Projectile();
+						break;
+					default:
+						GameObject* PL = (GameObject*) new Player;
+
+						((Player*)PL)->MakePlayer(6, P_RIGHT);
+
+						((Player*)PL)->DashTimer = ((Player*)PL)->GetDashCT();
+
+						m_GameObjects[datalist[i].index] = PL;
+						break;
+					}
+				}
+				m_GameObjects[datalist[i].index]->Decode(datalist[i]);
+			}
+		}
 	}
 }
 

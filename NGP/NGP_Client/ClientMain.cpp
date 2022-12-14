@@ -37,6 +37,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 
 static GameObject* PL = (GameObject*) new Player; // �÷��̾� ����ü
 GameObjectManager GOMgr;
+//PlayerData player_data;
+int player_index;
 CRITICAL_SECTION cs;
 
 KeyBoardManager key_board_manager;
@@ -70,7 +72,7 @@ DWORD WINAPI RecvThread(LPVOID arg)
 		}
 		EnterCriticalSection(&cs);
 		//((Player*)PL)->Decode(data);
-		GOMgr.Decode(datalist);
+		GOMgr.Decode(datalist, player_index);
 		LeaveCriticalSection(&cs);
 	}
 
@@ -100,10 +102,9 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevinstance, LPSTR lpszCmdPa
 	retval = connect(sock, (struct sockaddr*)&serveraddr, sizeof(serveraddr));
 	if (retval == SOCKET_ERROR) err_quit("connect()");
 
-	PlayerData player_data;
 
 	// ������ �ޱ�(playerIndex)								
-	retval = recv(sock, (char*)&player_data.playerIndex, sizeof(int), MSG_WAITALL);
+	retval = recv(sock, (char*)&player_index, sizeof(int), MSG_WAITALL);
 	if (retval == SOCKET_ERROR) {
 		//err_asdf("recv()", 0, threadNum * 4 + 4);
 	}
@@ -196,42 +197,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
 			((Player*)PL)->DashTimer = ((Player*)PL)->GetDashCT();
 			key_board_manager.reset();
 
-			{
-				int ti = 0;
-				// BackGround
-				MapObject* newMapObject = (MapObject*) new BackGround(WndRect.right * 2, WndRect.bottom);
-				GOMgr.AddObject((GameObject*)newMapObject, ti++);
-
-				// Brick
-				newMapObject = (MapObject*) new Brick(RECT{ 0,900,3900,1080 }, Brick::Ground);
-				GOMgr.AddObject((GameObject*)newMapObject, ti++);
-				newMapObject = (MapObject*) new Brick(RECT{ 1760,600,2360,900 }, Brick::Wall);
-				GOMgr.AddObject((GameObject*)newMapObject, ti++);
-				newMapObject = (MapObject*) new Brick(RECT{ 2360,700,2600,900 }, Brick::Wall);
-				GOMgr.AddObject((GameObject*)newMapObject, ti++);
-				newMapObject = (MapObject*) new Brick(RECT{ 2600,800,3300,900 }, Brick::Wall);
-				GOMgr.AddObject((GameObject*)newMapObject, ti++);
-				newMapObject = (MapObject*) new Brick(RECT{ 400,750,860,900 }, Brick::Wall);
-				GOMgr.AddObject((GameObject*)newMapObject, ti++);
-				newMapObject = (MapObject*) new Brick(RECT{ 1020,680,1540,700 }, Brick::Shelf);
-				GOMgr.AddObject((GameObject*)newMapObject, ti++);
-				newMapObject = (MapObject*) new Brick(RECT{ 660,470,1540,490 }, Brick::Shelf);
-				GOMgr.AddObject((GameObject*)newMapObject, ti++);
-
-				// Player
-				GOMgr.AddObject((GameObject*)PL, ti++);
-
-				// Enemy
-				Enemy* newEnemyObject = (Enemy*) new Base(POINT{ 300, 400 }, Enemy::direction::E_LEFT);
-				GOMgr.AddObject((GameObject*)newEnemyObject, ti++);
-				newEnemyObject = (Enemy*) new Bird(POINT{ 300, 500 }, Enemy::direction::E_LEFT);
-				GOMgr.AddObject((GameObject*)newEnemyObject, ti++);
-				newEnemyObject = (Enemy*) new Wolf(POINT{ 300, 600 }, Enemy::direction::E_LEFT);
-				GOMgr.AddObject((GameObject*)newEnemyObject, ti++);
-				newEnemyObject = (Enemy*) new Plant(POINT{ 300, 700 }, Enemy::direction::E_LEFT);
-				GOMgr.AddObject((GameObject*)newEnemyObject, ti++);
-
-			}
+			
 
 			SetTimer(hWnd, 1, 10, NULL); // PrintTimer
 			ReleaseDC(hWnd, hDC);

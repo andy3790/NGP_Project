@@ -65,6 +65,40 @@ int PlayerManager::MakeGame(int game_id)
 	//HANDLE hThread1 = CreateThread(NULL, 0, GameThread, m_ppGame[game_id], 0, NULL);
 	////if (hThread1 == NULL) return 1;
 	//CloseHandle(hThread1);
+	{
+		int ti = 0;
+		// BackGround
+		
+		// Brick
+		//MapObject* newMapObject = (MapObject*) new Brick(RECT{ 0,900,3900,1080 }, Brick::Ground);
+		//m_ppGame[game_id]->GetGOMgr()->AddObject((GameObject*)newMapObject, ti++);
+		//newMapObject = (MapObject*) new Brick(RECT{ 1760,600,2360,900 }, Brick::Wall);
+		//m_ppGame[game_id]->GetGOMgr()->AddObject((GameObject*)newMapObject, ti++);
+		//newMapObject = (MapObject*) new Brick(RECT{ 2360,700,2600,900 }, Brick::Wall);
+		//m_ppGame[game_id]->GetGOMgr()->AddObject((GameObject*)newMapObject, ti++);
+		//newMapObject = (MapObject*) new Brick(RECT{ 2600,800,3300,900 }, Brick::Wall);
+		//m_ppGame[game_id]->GetGOMgr()->AddObject((GameObject*)newMapObject, ti++);
+		//newMapObject = (MapObject*) new Brick(RECT{ 400,750,860,900 }, Brick::Wall);
+		//m_ppGame[game_id]->GetGOMgr()->AddObject((GameObject*)newMapObject, ti++);
+		//newMapObject = (MapObject*) new Brick(RECT{ 1020,680,1540,700 }, Brick::Shelf);
+		//m_ppGame[game_id]->GetGOMgr()->AddObject((GameObject*)newMapObject, ti++);
+		//newMapObject = (MapObject*) new Brick(RECT{ 660,470,1540,490 }, Brick::Shelf);
+		//m_ppGame[game_id]->GetGOMgr()->AddObject((GameObject*)newMapObject, ti++);
+
+		// Player
+
+		// Enemy
+		Enemy* newEnemyObject = (Enemy*) new Base(POINT{ 300, 400 }, Enemy::direction::E_LEFT);
+		m_ppGame[game_id]->GetGOMgr()->AddObject((GameObject*)newEnemyObject, ti++);
+		newEnemyObject = (Enemy*) new Bird(POINT{ 300, 500 }, Enemy::direction::E_LEFT);
+		m_ppGame[game_id]->GetGOMgr()->AddObject((GameObject*)newEnemyObject, ti++);
+		newEnemyObject = (Enemy*) new Wolf(POINT{ 300, 600 }, Enemy::direction::E_LEFT);
+		m_ppGame[game_id]->GetGOMgr()->AddObject((GameObject*)newEnemyObject, ti++);
+		newEnemyObject = (Enemy*) new Plant(POINT{ 300, 700 }, Enemy::direction::E_LEFT);
+		m_ppGame[game_id]->GetGOMgr()->AddObject((GameObject*)newEnemyObject, ti++);
+
+	}
+
 
 	if (m_ppGame[game_id] == NULL)
 		return FAILED_MAKE_NEW_GAME;

@@ -1,6 +1,14 @@
 #pragma once
 #include"Consol.h"
 #include"GameObject.h"
+#include"Player.h"
+#include"Base.h"
+#include"Bird.h"
+#include"Plant.h"
+#include"Wolf.h"
+#include"BackGround.h"
+#include"Brick.h"
+#include"Projectile.h"
 #include"NGP_struct.h"
 
 class GameObjectManager{
@@ -39,7 +47,7 @@ private:
 public:
 	void SetObjectData(ObjectData* input_array);
 	void SwapDataBuffer(DBufPointer location);
-	void Decode(ObjectData* datalist);
+	void Decode(ObjectData* datalist, int player_index);
 
 	void Render(HDC hDC, HBITMAP hBitmap, RECT WndRect);
 

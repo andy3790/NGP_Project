@@ -82,6 +82,7 @@ bool Game::DataSender(int player_num)
             continue;
         }
         object_data[i] = GOMgr->GetGameObject(i)->Encode();
+        object_data[i].index = i;
     }
 
     SOCKET sock;
