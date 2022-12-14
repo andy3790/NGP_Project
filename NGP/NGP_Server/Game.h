@@ -36,7 +36,7 @@ public:
 	
 	void ShowInformation();
 	
-	void Update(float eTime);
+	void Update(float eTime, RECT WndRect);
 	bool DataSender(int player_num);
 
 	void SetPprevTime(float in) { m_fprevTime = in; };

@@ -36,7 +36,7 @@ void GameObjectManager::InitGameObjects()
 }
 
 
-void GameObjectManager::Update(float eTime)
+void GameObjectManager::Update(float eTime, RECT WndRect)
 {
 	// 모든 오브젝트의 업데이트를 부름
 
@@ -44,7 +44,7 @@ void GameObjectManager::Update(float eTime)
 	{
 		if (m_GameObjects[i] == NULL)
 			continue;
-		m_GameObjects[i]->Update(eTime);
+		m_GameObjects[i]->Update(eTime, WndRect);
 	}
 }
 

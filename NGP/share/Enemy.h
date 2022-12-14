@@ -112,7 +112,7 @@ public:
 
 #elif CONSOL==SERVER
 public:
-	virtual void Update(float eTime);
+	virtual void Update(float eTime, RECT WndRect);
 	virtual ObjectData Encode();
 	STATE IntToState_Enemey(int in, int dir);
 #endif

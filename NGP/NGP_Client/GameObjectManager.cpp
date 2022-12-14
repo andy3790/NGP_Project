@@ -39,10 +39,13 @@ void GameObjectManager::SwapDataBuffer(DBufPointer location)
 void GameObjectManager::Decode(ObjectData* datalist)
 {
 	for (int i = 0; i < MAX_OBJECT_COUNT; i++) {
+		if(datalist[i].index == 0)
+			if(m_GameObjects[8] != NULL)
+				m_GameObjects[8]->Decode(datalist[i]);
 		
-		if (m_GameObjects[datalist[i].index] != NULL) {
-			m_GameObjects[datalist[i].index]->Decode(datalist[i]);
-		}
+		//if (m_GameObjects[datalist[i].index] != NULL) {
+		//	m_GameObjects[datalist[i].index]->Decode(datalist[i]);
+		//}
 	}
 }
 

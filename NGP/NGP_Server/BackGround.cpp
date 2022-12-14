@@ -1,6 +1,6 @@
 #include "BackGround.h"
 
-void BackGround::Update(float eTime)
+void BackGround::Update(float eTime, RECT WndRect)
 {
 
 }

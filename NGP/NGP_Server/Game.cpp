@@ -132,7 +132,7 @@ bool Game::SetPlayerDataNULL(int player_num)
     return 0;
 }
 
-void Game::Update(float eTime)
+void Game::Update(float eTime, RECT WndRect)
 {
-    GOMgr->Update(eTime);
+    GOMgr->Update(eTime, WndRect);
 }

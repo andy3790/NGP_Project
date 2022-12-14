@@ -51,7 +51,7 @@ public:
 
 	int GetEmptyIndex();
 
-	void Update(float eTime);
+	void Update(float eTime, RECT WndRect);
 	void SetKeyBoardData(int player_num, KeyData keydata);
 	ObjectData* Encode(); // 오브젝트 데이터 배열을 반환.
 #endif

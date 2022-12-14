@@ -41,7 +41,7 @@ void Plant::DelelteEnemy()
 	myImage.Destroy();
 }
 
-void Plant::Update(float eTime)
+void Plant::Update(float eTime, RECT WndRect)
 {
 
 }

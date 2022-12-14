@@ -82,6 +82,8 @@ private:
 	int DashPrintTimer[5];
 
 public:
+	int StartPrintX = 0;
+	int Score = 0;
 
 #if CONSOL==CLIENT
 public:
@@ -93,7 +95,7 @@ private:
 	KeyBoardManager *KBM;
 
 public:
-	void Update(float eTime);
+	void Update(float eTime, RECT WndRect);
 	ObjectData Encode();
 
 	KeyBoardManager* GetKBM() { return KBM; };

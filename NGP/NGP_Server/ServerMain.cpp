@@ -8,6 +8,8 @@
 
 PlayerManager PM;
 
+RECT WndRect{ 0, 0, 1920, 1080 };
+
 DWORD WINAPI GameMain(LPVOID arg)
 {
 	std::cout << "게임 스레드 생성" << std::endl;
@@ -33,7 +35,7 @@ DWORD WINAPI GameMain(LPVOID arg)
 		float eTime = clock() - game->GetPrevTime();
 		game->SetPprevTime(clock());
 		eTime = eTime / 1000.f;
-		game->Update(eTime);
+		game->Update(eTime, WndRect);
 		//std::cout << eTime << std::endl;
 
 		// 플레이어들에게 데이터를 보낸다.

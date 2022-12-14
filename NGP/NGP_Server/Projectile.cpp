@@ -1,6 +1,6 @@
 #include "Projectile.h"
 
-void Projectile::Update(float eTime)
+void Projectile::Update(float eTime, RECT WndRect)
 {
 
 }

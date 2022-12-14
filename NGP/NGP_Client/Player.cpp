@@ -252,21 +252,21 @@ void Player::Render(HDC hDC, HBITMAP hBitmap, RECT WndRect)
 		VARIABLE_PITCH | FF_ROMAN, TEXT("±Ã¼­"));
 	oldFont = (HFONT)SelectObject(memIDC, hFont);
 
-	TCHAR str[20];/*
-	wsprintf(str, L"%d / %d", (*PL).GetNowHp(), (*PL).GetMaxHp());
-	TextOut(memIDC, (*PL).GetMaxHp() * 3 / 2 - 40 + 180, 135, str, _tcslen(str));*/
+	TCHAR str[20];
+	wsprintf(str, L"%d / %d", GetHp(), GetMaxHp());
+	TextOut(memIDC, GetMaxHp() * 3 / 2 - 40 + 180, 135, str, _tcslen(str));
 	SelectObject(memIDC, oldFont);
 
 
-	oldFont = (HFONT)SelectObject(memDC, hFont);/*
+	oldFont = (HFONT)SelectObject(memDC, hFont);
 	wsprintf(str, L"Score : %d", Score);
-	TextOut(memDC, WndRect.right - 150 + *StartPrintX, WndRect.top + 50, str, _tcslen(str));*/
+	TextOut(memDC, WndRect.right - 150 + StartPrintX, WndRect.top + 50, str, _tcslen(str));
 
 	SelectObject(memDC, oldFont);
 	DeleteObject(hFont);
 
 	//TransparentBlt(hDC, *StartPrintX, WndRect.bottom / 6 * 5, WndRect.right, WndRect.bottom / 6, memIDC, 0, 0, WndRect.right, WndRect.bottom / 6, RGB(255, 0, 255));
-	TransparentBlt(hDC, 0, WndRect.bottom / 6 * 5, WndRect.right, WndRect.bottom / 6, memIDC, 0, 0, WndRect.right, WndRect.bottom / 6, RGB(255, 0, 255));
+	TransparentBlt(hDC, StartPrintX, WndRect.bottom / 6 * 5, WndRect.right, WndRect.bottom / 6, memIDC, 0, 0, WndRect.right, WndRect.bottom / 6, RGB(255, 0, 255));
 
 
 	SelectObject(memIDC, oldIBitmap);

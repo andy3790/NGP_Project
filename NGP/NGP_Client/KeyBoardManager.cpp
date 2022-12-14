@@ -55,5 +55,8 @@ void KeyBoardManager::SelectKey(unsigned int wParam, int& key_index)
 	case 0x10:	// VK_SHIFT
 		key_index = Shift;
 		break;
+	case 0x20:	// VK_SPACE
+		key_index = SpaceBar;
+		break;
 	}
 }

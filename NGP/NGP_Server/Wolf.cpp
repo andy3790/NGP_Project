@@ -48,7 +48,7 @@ void Wolf::DelelteEnemy()
 	myImage.Destroy();
 }
 
-void Wolf::Update(float eTime)
+void Wolf::Update(float eTime, RECT WndRect)
 {
 
 }

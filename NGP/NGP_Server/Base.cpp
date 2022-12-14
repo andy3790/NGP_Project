@@ -48,7 +48,7 @@ void Base::DelelteEnemy()
 	myImage.Destroy();
 }
 
-void Base::Update(float eTime)
+void Base::Update(float eTime, RECT WndRect)
 {
 
 }

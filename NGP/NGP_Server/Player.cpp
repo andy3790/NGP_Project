@@ -299,9 +299,196 @@ void Player::Damage2PL(int Damage) {
 }
 
 
-void Player::Update(float eTime)
+void Player::Update(float eTime, RECT WndRect)
 {
-	
+	KBM->GetKeyState(KBM->A);
+	KBM->GetKeyState(KBM->D);
+	KBM->GetKeyState(KBM->Q);
+	KBM->GetKeyState(KBM->E);
+	KBM->GetKeyState(KBM->R);
+	KBM->GetKeyState(KBM->SpaceBar);
+	KBM->GetKeyState(KBM->Shift);
+
+	KBM->GetKeyState(KBM->LButton);
+	KBM->GetKeyState(KBM->RButton);
+
+	if (KBM->GetKeyState(KBM->Shift))
+		SetSpeed(8);
+	else
+		SetSpeed(5);
+
+	// act 0 = idle
+	// act 1 = move
+	// act 2 = prepare att1
+	// act 3 = att1
+	// act 4 = prepare att2
+	// act 5 = att2
+
+
+	// 이동
+	if (!UsingSkill) { // 스킬 사용중이 아닐 때만 이동 가능
+		if (Getact() == 0 && (KBM->GetKeyState(KBM->A) || KBM->GetKeyState(KBM->D))) { Setact(1); }
+	}
+
+	// 대쉬
+	if (!UsingSkill) { // 스킬 사용중이 아닐 때만 가능
+		if (DashTimer == GetDashCT() && Getact() == 1 && KBM->GetKeyState(KBM->RButton)) {
+			if (KBM->GetKeyState(KBM->D)) {
+				DashTimer = 0;
+			}
+			else if (KBM->GetKeyState(KBM->A)) {
+				DashTimer = 0;
+			}
+		}
+	}
+
+	// 대쉬 잔상 타이머
+	for (int i = 0; i < 5; i++) { if (GetDashPt(i) > 0) { CountDownDashPt(i); } }
+
+	if (Getact() == 1) {
+		// 좌측 이동
+		int speed = (int)((float)GetSpeed() * eTime * 50);
+		int dashspeed = (int)((float)GetDashSpeed() * eTime * 50);
+
+		if (DashTimer != GetDashCT()) {
+			// 왼쪽 대쉬
+			if (KBM->GetKeyState(KBM->A)) {
+				if (DashTimer <= GetDashCT() / 10) {
+					ChangePrintPos(-dashspeed, 0);
+				}
+				DashTimer++;
+				SetDashPT(DashTimer - 1, GetPrintPos().x, GetPrintPos().y, 5);
+			}
+			// 오른쪽 대쉬
+			else if (KBM->GetKeyState(KBM->D)) {
+				if (DashTimer <= GetDashCT() / 10) {
+					ChangePrintPos(dashspeed, 0);
+				}
+				DashTimer++;
+				SetDashPT(DashTimer - 1, GetPrintPos().x, GetPrintPos().y, 5);
+			}
+		}
+
+		if (KBM->GetKeyState(KBM->A)) {
+			SetDirect(P_LEFT);
+			ChangePrintPos(-speed, 0);
+		}
+		else if (!KBM->GetKeyState(KBM->A) && Getact() == 1 && GetDirect() == P_LEFT) {
+			Setact(0);
+		}
+		
+		// 우측 이동
+		if (KBM->GetKeyState(KBM->D)) {
+			SetDirect(P_RIGHT);
+			ChangePrintPos(speed, 0);
+		}
+		else if (!KBM->GetKeyState(KBM->D) && Getact() == 1 && GetDirect() == P_RIGHT) {
+			Setact(0);
+		}
+	}
+
+	// 점프 키 입력
+	static int JumpTimer = 0, MaxJumpTimer = 22;
+	static bool flag = true;
+	if (!UsingSkill) {
+		if (KBM->GetKeyState(KBM->SpaceBar)) {
+			if (flag) {
+				if (GetJump() == 0) { JumpTimer = MaxJumpTimer; ChangeJump(1); }
+				else if (GetJump() == 1) { JumpTimer = MaxJumpTimer; ChangeJump(1); }
+				flag = false;
+			}
+		}
+		else {
+			flag = true;
+		}
+	}
+
+	// 점프 타이머
+	ChangePrintPos(0, -JumpTimer);
+	if(JumpTimer > 0)
+		JumpTimer -= 1;
+
+
+	// 스킬
+	if (!UsingSkill) {
+		if (KBM->GetKeyState(KBM->Q)) {
+			SetS1CT(GetS1MCT());
+			UsingSkillNum = P_USE_SKILL_1;
+			UsingSkill = UseSkill(UsingSkillNum);
+		}
+		else if (KBM->GetKeyState(KBM->E)) {
+			SetS1CT(GetS2MCT());
+			UsingSkillNum = P_USE_SKILL_2;
+			UsingSkill = UseSkill(UsingSkillNum);
+		}
+		else if (KBM->GetKeyState(KBM->R)) {
+			SetUltCT(GetUltMCT());
+			UsingSkillNum = P_USE_SKILL_3;
+			UsingSkill = UseSkill(UsingSkillNum);
+		}
+	}
+
+
+	// Print data update
+	if (GetPrintPos().x < StartPrintX + WndRect.right / 3) { StartPrintX -= 5; }
+	else if (GetPrintPos().x > StartPrintX + WndRect.right / 3 * 2) { StartPrintX += 5; }
+	if (!UsingSkill) {
+		if (Getcount() >= GetNumCount()) {
+			Setcount(0);
+			if (Getact() > 1) { Setact(GetNextAct()); }
+		}
+		if (Getcount() == 0) {
+			if (Getact() == 2) {
+				SetNextAct(Getact() + 1);
+			}
+			else if (Getact() == 3) {
+				SetNextAct(0);
+				if (GetDirect() == P_LEFT) { SetPrintPos(GetPrintPos().x + GetPrintSizeX() - 260, GetPrintPos().y); }
+				SetPrintSizeX(260);
+				SetPrintSizeY(100);
+			}
+			else if (Getact() == 4) {
+				SetNextAct(Getact() + 1);
+				if (GetDirect() == P_LEFT) { SetPrintPos(GetPrintPos().x + GetPrintSizeX() - 70, GetPrintPos().y); }
+				SetPrintSizeX(70);
+				SetPrintSizeY(160);
+				if (GetDirect() == P_RIGHT) { ChangePrintPos(12, 0); }
+				else { ChangePrintPos(-12, 0); }
+			}
+			else if (Getact() == 5) {
+				SetNextAct(0);
+				if (GetDirect() == P_LEFT) { SetPrintPos(GetPrintPos().x + GetPrintSizeX() - 140, GetPrintPos().y); }
+				SetPrintSizeX(140);
+				SetPrintSizeY(160);
+			}
+			else {
+				if (GetPrintSizeX() != 80 && GetDirect() == P_LEFT) {
+					SetPrintPos(GetPrintPos().x + GetPrintSizeX() - 80, GetPrintPos().y);
+				}
+				SetPrintSizeX(80);
+				SetPrintSizeY(100);
+			}
+			//CrashCheck2Wall(WndRect, wall[Map_num], WallCount[Map_num], StartPrintX);
+		}
+	}
+
+	//if (Getact() == 3 || Getact() == 5 || UsingSkill) {
+	//	// 적과 공격 데미지 체크
+	//}
+
+	//Skill CoolTime
+	if (GetS1CT() > 0) { ChangeS1CT(-1); }
+	if (GetS2CT() > 0) { ChangeS2CT(-1); }
+	if (GetUltCT() > 0) { ChangeUltCT(-1); }
+
+	// Animaion counter
+	Changecount(1);
+	if (UsingSkill) { UsingSkill = UseSkill(UsingSkillNum); }
+	if (GetDamageTimer() > 0) { ChangeDamageTimer(-1); }
+	else if (GetDamageTimer() <= 0 && GetDamaged()) { SetDamaged(FALSE); }
+
+
+	//printf("플레이어 위치 %d, %d\n", PrintPos.x, PrintPos.y);
 }
 
 ObjectData Player::Encode()

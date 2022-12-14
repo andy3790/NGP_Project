@@ -51,7 +51,7 @@ void Bird::DelelteEnemy()
 	myImage.Destroy();
 }
 
-void Bird::Update(float eTime)
+void Bird::Update(float eTime, RECT WndRect)
 {
 
 }

@@ -13,7 +13,7 @@ public:
 
 #elif CONSOL==SERVER
 public:
-	void Update(float eTime);
+	void Update(float eTime, RECT WndRect);
 	ObjectData Encode();
 #endif
 

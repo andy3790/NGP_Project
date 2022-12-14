@@ -1,6 +1,6 @@
 #include "Brick.h"
 
-void Brick::Update(float eTime)
+void Brick::Update(float eTime, RECT WndRect)
 {
 
 }

@@ -166,8 +166,9 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevinstance, LPSTR lpszCmdPa
 
 LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
 		PAINTSTRUCT ps;
-		HDC hDC;
+		HDC hDC, memDC;
 		static HBITMAP hBitmap;
+		HBITMAP oldBitmap;
 		static RECT WndRect; // ������ â RECT
 
 		bool Pause = false;
@@ -232,18 +233,22 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
 
 			}
 
-
+			SetTimer(hWnd, 1, 10, NULL); // PrintTimer
 			ReleaseDC(hWnd, hDC);
 			break;
 		case WM_PAINT:
 			hDC = BeginPaint(hWnd, &ps);
+			memDC = CreateCompatibleDC(hDC);
+			oldBitmap = (HBITMAP)SelectObject(memDC, hBitmap);
+			//((Player*)PL)->Render(hDC, hBitmap, WndRect);
 
 			EnterCriticalSection(&cs);
-			//((Player*)PL)->Render(hDC, hBitmap, WndRect);
+			GOMgr.Render(memDC, hBitmap, WndRect);
 			LeaveCriticalSection(&cs);
 
-			GOMgr.Render(hDC, hBitmap, WndRect);
-
+			BitBlt(hDC, WndRect.left, WndRect.top, WndRect.right, WndRect.bottom, memDC, 0, 0, SRCCOPY);
+			SelectObject(memDC, oldBitmap);
+			DeleteDC(memDC);
 			EndPaint(hWnd, &ps);
 
 			break;
@@ -370,7 +375,16 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
 					exit(0);
 				}
 			}
+			InvalidateRect(hWnd, NULL, false);
 			break;
+		case WM_TIMER:
+			switch (wParam) {
+			case 1:
+				InvalidateRect(hWnd, NULL, false);
+				break;
+			}
+			break;
+
 		case WM_DESTROY:
 			PostQuitMessage(0);
 			break;
