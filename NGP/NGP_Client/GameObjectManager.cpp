@@ -53,7 +53,13 @@ void GameObjectManager::Decode(ObjectData* datalist, int player_index)
 				if (datalist[i].index == player_index)
 				{
 					// 플레이어임
-					m_GameObjects[datalist[i].index] = (GameObject*) new Player();
+					GameObject* PL = (GameObject*) new Player;
+
+					((Player*)PL)->MakePlayer(6, P_RIGHT);
+
+					((Player*)PL)->DashTimer = ((Player*)PL)->GetDashCT();
+
+					m_GameObjects[datalist[i].index] = PL;
 				}
 				else
 				{
@@ -61,16 +67,16 @@ void GameObjectManager::Decode(ObjectData* datalist, int player_index)
 					switch (datalist[i].vel_1)
 					{
 					case OBJECT_TYPE_BASE:
-						m_GameObjects[datalist[i].index] = (GameObject*) new Base();
+						m_GameObjects[datalist[i].index] = (GameObject*) new Base({ 0,0 }, 0);
 						break;
 					case OBJECT_TYPE_BIRD:
-						m_GameObjects[datalist[i].index] = (GameObject*) new Bird();
+						m_GameObjects[datalist[i].index] = (GameObject*) new Bird({ 0,0 }, 0);
 						break;
 					case OBJECT_TYPE_WOLF:
-						m_GameObjects[datalist[i].index] = (GameObject*) new Wolf();
+						m_GameObjects[datalist[i].index] = (GameObject*) new Wolf({ 0,0 }, 0);
 						break;
 					case OBJECT_TYPE_PLANT:
-						m_GameObjects[datalist[i].index] = (GameObject*) new Plant();
+						m_GameObjects[datalist[i].index] = (GameObject*) new Plant({ 0,0 }, 0);
 						break;
 					case OBJECT_TYPE_BRICK:
 						m_GameObjects[datalist[i].index] = (GameObject*) new Brick();

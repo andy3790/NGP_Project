@@ -114,5 +114,5 @@ void Base::Decode(ObjectData object_data)
 {
 	Enemy::SetLocaition((int)object_data.pos.x, (int)object_data.pos.y);
 	Enemy::SetHp((int)object_data.hp);
-	Enemy::SetAct((int)object_data.state);
+	Enemy::SetAct(object_data.state);
 }

@@ -63,7 +63,7 @@ ObjectData Bird::Encode()
 	POINT p = GetLocaition();
 	data.pos = { (short)p.x, (short)p.y };
 	data.state = IntToState_Enemey(GetAct(), GetDirect());
-	data.vel_1 = 0;
+	data.vel_1 = OBJECT_TYPE_BIRD;
 
 	return data;
 }

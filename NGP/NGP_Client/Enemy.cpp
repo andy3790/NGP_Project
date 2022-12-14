@@ -6,14 +6,18 @@ void Enemy::SetAct(STATE Act)
 	{
 	case STATE::idle:
 		act = 0;
+		break;
 	case STATE::left:
 		act = 1;
 		direct = 0;
+		break;
 	case STATE::right:
 		act = 1;
 		direct = 1;
+		break;
 	case STATE::att:
 		act = 2;
+		break;
 	}
 }
 

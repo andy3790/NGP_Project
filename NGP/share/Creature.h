@@ -36,8 +36,8 @@ public:
 
 #elif CONSOL==SERVER
 public:
-	virtual void Update(float eTime) {};
-	virtual ObjectData Encode() { return ObjectData{}; };
+	virtual void Update(float eTime) = 0;
+	virtual ObjectData Encode() = 0;// { return ObjectData{}; };
 #endif
 
 };
