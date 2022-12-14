@@ -347,8 +347,8 @@ void Player::Update(float eTime, RECT WndRect)
 
 	if (Getact() == 1) {
 		// 좌측 이동
-		int speed = (int)((float)GetSpeed() * eTime * 50);
-		int dashspeed = (int)((float)GetDashSpeed() * eTime * 50);
+		int speed = (int)((float)GetSpeed() * eTime * 100);
+		int dashspeed = (int)((float)GetDashSpeed() * eTime * 100);
 
 		if (DashTimer != GetDashCT()) {
 			// 왼쪽 대쉬
@@ -404,7 +404,7 @@ void Player::Update(float eTime, RECT WndRect)
 	}
 
 	// 점프 타이머
-	ChangePrintPos(0, -JumpTimer);
+	ChangePrintPos(0, MaxJumpTimer-JumpTimer);
 	if(JumpTimer > 0)
 		JumpTimer -= 1;
 

@@ -28,5 +28,6 @@ void BackGround::Render(HDC hDC, HBITMAP hBitmap, RECT WndRect)
 
 void BackGround::Decode(ObjectData object_data)
 {
-
+	if(hMapBitmap == NULL)
+		MakeBackGroundObject(1920 * 2, 1080);
 }

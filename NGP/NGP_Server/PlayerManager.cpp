@@ -65,13 +65,16 @@ int PlayerManager::MakeGame(int game_id)
 	//HANDLE hThread1 = CreateThread(NULL, 0, GameThread, m_ppGame[game_id], 0, NULL);
 	////if (hThread1 == NULL) return 1;
 	//CloseHandle(hThread1);
+	RECT WndRect = { 0, 0, 1920, 1080 };
 	{
 		int ti = 0;
-		// BackGround
-		
-		// Brick
-		//MapObject* newMapObject = (MapObject*) new Brick(RECT{ 0,900,3900,1080 }, Brick::Ground);
-		//m_ppGame[game_id]->GetGOMgr()->AddObject((GameObject*)newMapObject, ti++);
+		//// BackGround
+		MapObject* newMapObject = (MapObject*) new BackGround(WndRect.right * 2, WndRect.bottom);
+		m_ppGame[game_id]->GetGOMgr()->AddObject((GameObject*)newMapObject, ti++);
+
+		//// Brick
+		newMapObject = (MapObject*) new Brick(RECT{ 0,900,3900,1080 }, Brick::Ground);
+		m_ppGame[game_id]->GetGOMgr()->AddObject((GameObject*)newMapObject, ti++);
 		//newMapObject = (MapObject*) new Brick(RECT{ 1760,600,2360,900 }, Brick::Wall);
 		//m_ppGame[game_id]->GetGOMgr()->AddObject((GameObject*)newMapObject, ti++);
 		//newMapObject = (MapObject*) new Brick(RECT{ 2360,700,2600,900 }, Brick::Wall);

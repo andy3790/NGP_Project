@@ -5,13 +5,14 @@ public:
 	enum Type : int {
 		Ground,
 		Wall,
-		Shelf
+		Shelf,
+		None
 	};
 
 private:
 	CImage image;
 	RECT rect;
-	Type type;
+	Type type = None;
 
 public:
 	Brick() {};

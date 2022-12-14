@@ -91,11 +91,8 @@ void GameObjectManager::Decode(ObjectData* datalist, int player_index)
 						break;
 					default:
 						GameObject* PL = (GameObject*) new Player;
-
 						((Player*)PL)->MakePlayer(6, P_RIGHT);
-
 						((Player*)PL)->DashTimer = ((Player*)PL)->GetDashCT();
-
 						m_GameObjects[datalist[i].index] = PL;
 						break;
 					}
