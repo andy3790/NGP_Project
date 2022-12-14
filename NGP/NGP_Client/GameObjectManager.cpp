@@ -87,6 +87,15 @@ void GameObjectManager::Decode(ObjectData* datalist, int player_index)
 					case OBJECT_TYPE_PLANTPROJECTILE:
 						m_GameObjects[datalist[i].index] = (GameObject*) new Projectile();
 						break;
+					default:
+						GameObject* PL = (GameObject*) new Player;
+
+						((Player*)PL)->MakePlayer(6, P_RIGHT);
+
+						((Player*)PL)->DashTimer = ((Player*)PL)->GetDashCT();
+
+						m_GameObjects[datalist[i].index] = PL;
+						break;
 					}
 				}
 				m_GameObjects[datalist[i].index]->Decode(datalist[i]);
